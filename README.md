@@ -22,6 +22,7 @@
 2. Chạy lệnh:
    - pip install django để cài đặt django
    - pip install mysqlclient mysql cho django
+     
 3.Cấu hình cơ sở dữ liệu
   - Mở file spotify/settings.py.  
   - Cập nhật thông tin kết nối MySQL trong phần DATABASES  
