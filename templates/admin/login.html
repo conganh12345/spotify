@@ -1,0 +1,129 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>Đăng nhập </title>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" />
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/notification/snackbar/snackbar.min.css' %}" rel="stylesheet" type="text/css" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    
+    <link href="{% static 'css/assets/light/authentication/auth-cover.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/assets/dark/authentication/auth-cover.css' %}" rel="stylesheet" type="text/css" />  
+          
+    <link href="{% static 'css/assets/dark/main.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/assets/light/main.css' %}" rel="stylesheet" type="text/css" />
+    
+    <link href="{% static 'plugins/light/sweetalerts2/custom-sweetalert.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/dark/sweetalerts2/custom-sweetalert.css' %}" rel="stylesheet" type="text/css" />
+    
+    <link href="{% static 'css/layouts/modern-light-menu/light/plugins.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/layouts/modern-light-menu/dark/plugins.css' %}" rel="stylesheet" type="text/css" />
+
+    <link href="{% static 'css/assets/light/elements/alert.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/assets/dark/elements/alert.css' %}" rel="stylesheet" type="text/css" />  
+    <!-- END GLOBAL MANDATORY STYLES -->
+    
+</head>
+<body class="form">
+    <div class="auth-container d-flex">
+
+      <div class="container mx-auto align-self-center">
+  
+          <div class="row">
+  
+              <div class="col-6 d-lg-flex d-none h-100 my-auto top-0 start-0 text-center justify-content-center flex-column">
+                  <div class="auth-cover-bg-image"></div>
+                  <div class="auth-overlay"></div>
+                      
+                  <div class="auth-cover">
+  
+                      <div class="position-relative">
+  
+                          <img src="{% static 'images/auth-cover.svg' %}" alt="auth-img">
+  
+                          <h2 class="mt-5 text-white font-weight-bolder px-2">Tham gia cộng đồng các nhà phát triển chuyên nghiệp</h2>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-8 col-12 d-flex flex-column align-self-center ms-lg-auto me-lg-0 mx-auto">
+                  <div class="card">
+                      <div class="card-body">
+  
+                          <div class="row">
+                              <div class="col-md-12 mb-3">
+                                  <h2>Đăng Nhập</h2>
+                                  <p>Nhập email và mật khẩu của bạn để đăng nhập</p>
+                              </div>
+                              <form id="loginForm" action="{{ app_path }}" method="post">
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4 mt-3" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                                            <strong>{{ error }}</strong>
+                                            
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Tên đăng nhập</label>
+                                        <input type="text" id="username" name="username" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label">Mật khẩu</label>
+                                        <input type="password" id="password" name="password" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <div class="form-check form-check-primary form-check-inline">
+                                            <input class="form-check-input me-3" type="checkbox" id="form-check-default" name="remember_me">
+                                            <label class="form-check-label" for="form-check-default">
+                                                Ghi nhớ tôi
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <input type="submit" class="btn btn-secondary w-100" value="ĐĂNG NHẬP">
+                                        <input type="hidden" name="next" value="{% url 'dashboard_index' %}">
+                                    </div>
+                                </div>
+                            </form>
+                              
+                          </div>
+                          
+                      </div>
+                  </div>
+              </div>
+              
+          </div>
+          
+      </div>
+
+  </div>
+    
+    <div class="overlay"></div> 
+    <div class="notification" id="successNotification"></div> 
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="{% static 'plugins/notification/snackbar/snackbar.min.js' %}"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'plugins/sweetalerts2/sweetalerts2.min.js' %}"></script>
+    
+    <script src="{% static 'js/user/signIn.js' %}"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends 'layouts/base-layout.html' %}
+{% load static %}
+
+{% block title %}
+Chỉnh sửa nhóm quyền
+{% endblock %}
+
+{% block custom_css %}
+<!-- Thêm CSS tùy chỉnh nếu cần -->
+{% endblock %}
+
+{% block content %}
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Nhóm quyền</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'group_index' %}">Quản lý nhóm quyền</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Thêm mới nhóm quyền</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="{% url 'group_index' %}" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form action="{% url 'group_edit' group.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Name">Tên nhóm quyền <strong class="text-danger">*</strong></label>
+                                        <input name="name"
+                                               type="text"
+                                               id="Name"
+                                               class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                                               placeholder="Tên nhóm quyền"
+                                               value="{{ form.name.value|default:'' }}">
+                                        {% for error in form.name.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-check form-check-primary d-block new-control mb-3">
+                                <input class="form-check-input chk-parent"
+                                    type="checkbox"
+                                    id="form-check-default"
+                                    onclick="toggleAllCheckboxes(this)"
+                                    >
+                                <label class="form-check-label" for="form-check-default">Chọn tất cả</label>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="permissions">Quyền truy cập</label>
+                                <div>
+                                    {% for permission in permissions %}
+                                    <div class="form-check form-check-primary">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               value="{{ permission.id }}"
+                                               name="permissions"
+                                               id="permission_{{ forloop.counter }}"
+                                               {% if permission in group_permissions %}checked{% endif %}>
+                                        <label class="form-check-label" for="permission_{{ forloop.counter }}">
+                                            {{ permission.name }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_scripts %}
+<script>
+    function toggleAllCheckboxes(source) {
+        $('input[name="permissions"]').prop('checked', $(source).is(':checked'));
+    }
+</script>
+{% endblock %}
