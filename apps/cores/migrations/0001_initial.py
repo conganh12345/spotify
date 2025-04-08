@@ -3,7 +3,6 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-
 class Migration(migrations.Migration):
 
     initial = True
@@ -15,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Artist',
             fields=[
-                ('artist_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(blank=True, max_length=50, null=True)),
                 ('bio', models.TextField(blank=True, null=True)),
                 ('avatar_url', models.TextField(blank=True, null=True)),
@@ -30,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Chat',
             fields=[
-                ('chat_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
             options={
@@ -40,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Genre',
             fields=[
-                ('genre_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(blank=True, max_length=50, null=True)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
@@ -50,23 +49,9 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='User',
-            fields=[
-                ('user_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(blank=True, max_length=50, null=True)),
-                ('email', models.EmailField(blank=True, max_length=100, null=True)),
-                ('password', models.CharField(blank=True, max_length=100, null=True)),
-                ('avatar_url', models.TextField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-            ],
-            options={
-                'db_table': 'users',
-            },
-        ),
-        migrations.CreateModel(
             name='Album',
             fields=[
-                ('album_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('title', models.CharField(blank=True, max_length=100, null=True)),
                 ('release_date', models.DateField(default='2025-01-01')),
                 ('image_url', models.TextField(blank=True, null=True)),
@@ -79,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Song',
             fields=[
-                ('song_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('title', models.CharField(blank=True, max_length=100, null=True)),
                 ('duration', models.IntegerField(blank=True, null=True)),
                 ('file_url', models.TextField(blank=True, null=True)),
@@ -95,10 +80,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Playlist',
             fields=[
-                ('playlist_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(blank=True, max_length=255, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cores.user')),
+                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='auth.User')),
             ],
             options={
                 'db_table': 'playlists',
@@ -107,12 +92,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ChatMessage',
             fields=[
-                ('message_id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('message_text', models.TextField(blank=True, null=True)),
                 ('is_read', models.BooleanField(default=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('chat', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cores.chat')),
-                ('sender', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cores.user')),
+                ('sender', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='auth.User')),
             ],
             options={
                 'db_table': 'chat_messages',
@@ -121,12 +106,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chat',
             name='user1',
-            field=models.ForeignKey(db_column='user1_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chat_user1', to='cores.user'),
+            field=models.ForeignKey(db_column='user1_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chat_user1', to='auth.User'),
         ),
         migrations.AddField(
             model_name='chat',
             name='user2',
-            field=models.ForeignKey(db_column='user2_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chat_user2', to='cores.user'),
+            field=models.ForeignKey(db_column='user2_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chat_user2', to='auth.User'),
         ),
         migrations.CreateModel(
             name='AlbumPlay',
@@ -135,7 +120,7 @@ class Migration(migrations.Migration):
                 ('played_at', models.DateTimeField(auto_now_add=True)),
                 ('plays_count', models.IntegerField(blank=True, null=True)),
                 ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cores.album')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cores.user')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.User')),
             ],
             options={
                 'db_table': 'album_plays',
@@ -160,7 +145,7 @@ class Migration(migrations.Migration):
                 ('played_at', models.DateTimeField(auto_now_add=True)),
                 ('plays_count', models.IntegerField(blank=True, null=True)),
                 ('song', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cores.song')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cores.user')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.User')),
             ],
             options={
                 'db_table': 'song_plays',
@@ -173,7 +158,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('followed_at', models.DateTimeField(auto_now_add=True)),
                 ('artist', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cores.artist')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cores.user')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.User')),
             ],
             options={
                 'db_table': 'artist_follows',

@@ -8,22 +8,26 @@ from apps.users.forms.user_edit_forms import UserEditForm
 from django.http import JsonResponse
 from django.contrib.auth.models import Group, Permission
 from apps.users.services.user_service import UserService
+from apps.groups.services.group_service import GroupService
 from django.core.exceptions import ValidationError
 from apps.common.constants import HTTP_METHOD_POST
 
+user_service = UserService()
+group_service = GroupService()
+
 @login_required
 def index(request):
-    users = User.objects.all()
+    users = user_service.get_all_users()
     return render(request, 'user/index.html', {'users': users})
 
 @login_required
 def create_user(request):
-    groups = Group.objects.all()
+    groups = group_service.get_all_groups()
     if request.method == HTTP_METHOD_POST:
         form = UserCreationForm(request.POST)
         if form.is_valid():
             try:
-                UserService.create_user(form, request.POST.getlist('groups'))
+                user_service.create_user(form, request.POST.getlist('groups'))
                 messages.success(request, 'Tạo người dùng thành công!')
                 return redirect('user_index')
             except ValidationError as e:
@@ -41,13 +45,13 @@ def create_user(request):
 @login_required
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    groups = Group.objects.all()
+    groups = group_service.get_all_groups()
     if request.method == HTTP_METHOD_POST:
         form = UserEditForm(request.POST, instance=user)
         password = request.POST.get('password')  
         if form.is_valid():
             try:
-                UserService.update_user(
+                user_service.update_user(
                     user, 
                     form, 
                     request.POST.getlist('groups'), 
@@ -72,7 +76,7 @@ def edit_user(request, user_id):
 def delete_user(request, id):
     if request.method == HTTP_METHOD_POST:
         try:
-            UserService.delete_user(id)
+            user_service.delete_user(id)
             return JsonResponse({'success': True}, status=200)
         except ValidationError as e:
             return JsonResponse({'error': str(e)}, status=404)

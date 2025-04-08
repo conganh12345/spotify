@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.cores', 
     'apps.users',
     'apps.groups',
+    'apps.artists',
 ]
 
 MIDDLEWARE = [

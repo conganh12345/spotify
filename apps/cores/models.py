@@ -1,28 +1,9 @@
 from django.db import models
-class User(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50,null=True,blank=True)
-    email = models.EmailField(max_length=100,null=True,blank=True)
-    password = models.CharField(max_length=100,null=True,blank=True)
-    avatar_url = models.TextField(null=True,blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        db_table = 'users'
-
-class Artist(models.Model):
-    artist_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50,blank=True,null=True)
-    bio = models.TextField(null=True,blank=True)
-    avatar_url = models.TextField(blank=True,null=True)
-    cover_url = models.TextField(blank=True,null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    genres_note = models.CharField(max_length=100,blank=True,null=True)
-    class Meta:
-        db_table='artists'
+from apps.artists.models import Artist 
+from django.contrib.auth.models import User
 
 class Album(models.Model):
-    album_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, null=True, blank=True)
     artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True)
     release_date = models.DateField(default='2025-01-01')
@@ -31,7 +12,7 @@ class Album(models.Model):
         db_table = 'albums'
 
 class Genre(models.Model):
-    genre_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,7 +20,7 @@ class Genre(models.Model):
         db_table = 'genres'
         
 class Song(models.Model):
-    song_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, null=True, blank=True)
     artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True)
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True)
@@ -51,7 +32,7 @@ class Song(models.Model):
         db_table ='songs'
 
 class Playlist(models.Model):
-    playlist_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -95,7 +76,7 @@ class ArtistFollow(models.Model):
         db_table = 'artist_follows'
 
 class Chat(models.Model):
-    chat_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user1 = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='chat_user1',db_column='user1_id')
     user2 = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='chat_user2',db_column='user2_id')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,7 +85,7 @@ class Chat(models.Model):
         db_table = 'chats'
 
 class ChatMessage(models.Model):
-    message_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     chat = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True)
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     message_text = models.TextField(null=True, blank=True)

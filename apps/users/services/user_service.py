@@ -1,43 +1,58 @@
 from django.contrib.auth.models import User, Group, Permission
 from django.core.exceptions import ValidationError
+from apps.users.repositories.user_repository import UserRepository
 
 
 class UserService:
-
-    @staticmethod
-    def create_user(form, groups):
+    def __init__(self):
+        self.user_repo = UserRepository()
+    
+    def get_all_users(self):
+        return self.user_repo.all()
+    
+    def create_user(self, form, groups):
         user = form.save(commit=False)
         user.set_password(form.cleaned_data['password'])
-        user.save()
+        
+        created_user = self.user_repo.create(
+            username=user.username,
+            email=user.email,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            password=user.password,
+        )
 
-        selected_groups = groups
-        user.groups.set(selected_groups)
-
-        permissions = Permission.objects.filter(group__id__in=selected_groups).distinct()
-        user.user_permissions.set(permissions)
+        created_user.groups.set(groups)
+        permissions = Permission.objects.filter(group__id__in=groups).distinct()
+        created_user.user_permissions.set(permissions)
 
         return user
 
-    @staticmethod
-    def update_user(user, form, groups, password=None):
-        user = form.save(commit=False)
+    def update_user(self, user, form, groups, password=None):
+        updated_user = form.save(commit=False)
+
         if password:
-            user.set_password(password)
-        user.save()
+            updated_user.set_password(password)
 
-        selected_groups = groups
-        user.groups.set(selected_groups)
+        update_data = {
+            'username': updated_user.username,
+            'email': updated_user.email,
+            'first_name': updated_user.first_name,
+            'last_name': updated_user.last_name,
+            'password': updated_user.password,
+        }
 
-        permissions = Permission.objects.filter(group__id__in=selected_groups).distinct()
+        self.user_repo.update(user, **update_data)
+
+        user.groups.set(groups)
+        permissions = Permission.objects.filter(group__id__in=groups).distinct()
         user.user_permissions.set(permissions)
 
         return user
 
-    @staticmethod
-    def delete_user(user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            user.delete()
-            return True
-        except User.DoesNotExist:
+    def delete_user(self, user_id):
+        user = self.user_repo.get(user_id)
+        if not user:
             raise ValidationError('Người dùng không tồn tại')
+        self.user_repo.delete(user)
+        return True
