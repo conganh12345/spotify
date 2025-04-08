@@ -12,10 +12,11 @@ from apps.groups.services.group_service import GroupService
 from django.core.exceptions import ValidationError
 from apps.common.constants import HTTP_METHOD_POST
 
+group_service = GroupService()
 
 @login_required
 def index(request):
-    groups = Group.objects.all()  
+    groups = group_service.get_all_groups()  
     return render(request, 'group/index.html', {'groups': groups})
 
 @login_required
@@ -24,7 +25,7 @@ def create_group(request):
         form = GroupCreationForm(request.POST)
         if form.is_valid():
             try:
-                GroupService.create_group(
+                group_service.create_group(
                     form, 
                     request.POST.getlist('permissions')
                 )
@@ -50,7 +51,7 @@ def edit_group(request, group_id):
         form = GroupEditForm(request.POST, instance=group)
         if form.is_valid():
             try:
-                GroupService.update_group(
+                group_service.update_group(
                     group, 
                     form, 
                     request.POST.getlist('permissions')
@@ -75,7 +76,7 @@ def edit_group(request, group_id):
 def delete_group(request, id):
     if request.method == HTTP_METHOD_POST:
         try:
-            GroupService.delete_group(id)
+            group_service.delete_group(id)
             return JsonResponse({'success': True}, status=200)
         except ValidationError as e:
             return JsonResponse({'error': str(e)}, status=404)
