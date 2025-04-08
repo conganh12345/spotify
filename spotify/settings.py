@@ -83,7 +83,9 @@ DATABASES = {
         'NAME': 'spotify',                    # Tên database
         'USER': 'root',                        # Tài khoản đăng nhập MySQL (thường là 'root' trên Laragon)
         'PASSWORD': '',                        # Mật khẩu MySQL (Laragon mặc định là rỗng)
-        'HOST': 'localhost',                   # Địa chỉ host (localhost)
+        #'HOST': 'localhost',                   # Địa chỉ host (localhost)
+        'HOST': '127.0.0.1',     # Sử dụng IP thay vì 'localhost' để tránh một số lỗi
+        'PORT': '3306',          # Cổng MySQL mặc định của XAMPP
     }
 }
 
