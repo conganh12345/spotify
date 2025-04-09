@@ -35,3 +35,7 @@
 
 6. Chạy server
  - python manage.py runserver
+
+7. Cài thư viện này để tạo API
+  - pip install djangorestframework
+
