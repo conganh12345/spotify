@@ -1,0 +1,155 @@
+{% extends 'layouts/base-layout.html' %}
+{% load static %}
+
+{% block title %}
+Chỉnh sửa nghệ sĩ
+{% endblock %}
+
+{% block custom_css %}
+
+<style>
+    .ts-control{
+           padding: 12px;
+      }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Nghệ sĩ</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_index' %}">Quản lý nghệ sĩ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa nghệ sĩ</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="{% url 'user_index' %}" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form action="{% url 'artist_edit' artist.id %}" id="general-settings" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Name">Tên nghệ sĩ <strong class="text-danger">*</strong></label>
+                                        <input name="name"
+                                               type="text"
+                                               id="name"
+                                               class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                                               placeholder="Tên nghệ sĩ"
+                                               value="{{ form.name.value|default:'artist.name' }}">
+                                        {% for error in form.name.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Bio">Tiểu sử</label>
+                                        <textarea name="bio"
+                                            id="Bio"
+                                            class="form-control {% if form.bio.errors %}is-invalid{% endif %}"
+                                            placeholder="Tiểu sử">{{ form.bio.value|default:artist.bio }}</textarea>
+                                        {% for error in form.bio.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="avatar_url">Ảnh đại diện <strong class="text-danger">*</strong></label>
+                                        <input name="avatar_url"
+                                               type="file"
+                                               id="avatar_url"
+                                               class="form-control {% if form.avatar_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.avatar_url.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        {% if artist.avatar_url %}
+                                        <img id="selected-avatar" src="{{ artist.avatar_url.url }}" alt="Ảnh đại diện" style="max-width: 300px; margin-top: 10px;">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="cover_url">Ảnh bìa <strong class="text-danger">*</strong></label>
+                                        <input name="cover_url"
+                                            type="file"
+                                            id="cover_url"
+                                            class="form-control {% if form.cover_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.cover_url.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        {% if artist.cover_url %}
+                                        <img id="selected-cover" src="{{ artist.cover_url.url }}" alt="Ảnh bìa" style="max-width: 300px; margin-top: 10px;">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_scripts %}
+<script>
+    $('#avatar_url').on('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#selected-avatar').attr('src', e.target.result).show();
+            };
+            reader.readAsDataURL(file);
+        } else {
+            $('#selected-avatar').hide();
+        }
+    });
+
+    $('#cover_url').on('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#selected-cover').attr('src', e.target.result).show();
+            };
+            reader.readAsDataURL(file);
+        } else {
+            $('#selected-cover').hide();
+        }
+    });
+</script>
+{% endblock %}
