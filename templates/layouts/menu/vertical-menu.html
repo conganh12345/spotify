@@ -111,6 +111,18 @@
 				</a>
 			</li>
 
+			<li class="menu {% if request.resolver_match.url_name == 'genre_index' %}active{% elif request.resolver_match.url_name == 'genre_create' %}active{% elif request.resolver_match.url_name == 'genre_edit' %}active{% endif %}">
+				<a href="{% url 'genre_index' %}" class="dropdown-toggle">
+					<div>
+<!-- NEW - feather-tag -->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag">
+	<path d="M20.59 13.41L11 3 3 11l9.59 9.59a2 2 0 0 0 2.83 0l5.17-5.17a2 2 0 0 0 0-2.83z"></path>
+	<line x1="7" y1="7" x2="7" y2="7"></line>
+  </svg>
+						  <span>Thể loại</span>
+					</div>
+				</a>
+			</li>
 		</ul>
 
 	</nav>

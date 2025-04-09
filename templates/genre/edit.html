@@ -1,0 +1,99 @@
+{% extends 'layouts/base-layout.html' %}
+{% load static %}
+
+{% block title %}
+Chỉnh sửa thể loại 
+{% endblock %}
+
+{% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/light/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/dark/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/tomSelect/tom-select.default.min.css' %}">
+<style>
+    .ts-control{
+           padding: 12px;
+      }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Thể loại</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'genre_index' %}">Quản lý thể loại</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa thể loại</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="{% url 'genre_index' %}" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa thể loại</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form action="{% url 'genre_edit' genre.id %}" id="general-settings" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Name">Tên thể loại <strong class="text-danger">*</strong></label>
+                                        <input name="name"
+                                               type="text"
+                                               id="UserName"
+                                               class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                                               placeholder="Tên thể loại"
+                                               value="{{ form.name.value|default:genre.name }}">
+                                        {% for error in form.name.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="Description">Mô tả <strong class="text-danger">*</strong></label>
+                                    <textarea name="description"
+                                              id="Description"
+                                              class="form-control {% if form.description.errors %}is-invalid{% endif %}"
+                                              placeholder="Nhập mô tả"
+                                              rows="4">{{ form.description.value|default:'' }}</textarea>
+                                    {% for error in form.description.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                           
+
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_scripts %}
+<script src="{% static 'plugins/tomSelect/tom-select.base.js' %}"></script>
+<script src="{% static 'plugins/tomSelect/custom-tom-select.js' %}"></script>
+{% endblock %}
