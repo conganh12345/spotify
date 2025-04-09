@@ -25,5 +25,6 @@ urlpatterns = [
     path('user/', include('apps.users.urls')), 
     path('group/', include('apps.groups.urls')),
     path('artist/', include('apps.artists.urls')), 
-    path('genre/',include('apps.genres.urls'))
+    path('genre/',include('apps.genres.urls')),
+    path('api/', include('apps.genres.api_urls')),    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

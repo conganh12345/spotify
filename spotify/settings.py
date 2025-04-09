@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.groups',
     'apps.artists',
     'apps.genres',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
