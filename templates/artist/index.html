@@ -1,5 +1,11 @@
-{% extends 'layouts/base-layout.html' %} {% load static %} {% block title %}
-Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
+{% extends 'layouts/base-layout.html' %} 
+{% load static %} 
+
+{% block title %}
+Quản lý nghệ sĩ 
+{% endblock %} 
+
+{% block custom_css %}
 <link
   rel="stylesheet"
   type="text/css"
@@ -35,7 +41,9 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
   type="text/css"
   href="{% static 'css/plugins/dark/table/datatable/custom_dt_custom.css' %}"
 />
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div>
   <!-- BREADCRUMB -->
   <div class="page-meta">
@@ -75,6 +83,7 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
             <thead>
               <tr>
                 <th style="width: 5%">STT</th>
+                <th style="width: 20%">Ảnh đại diện</th>
                 <th style="width: 25%">Tên</th>
                 <th style="width: 45%">Tiểu sử</th>
                 <th class="no-content" style="width: 5%">Thao tác</th>
@@ -84,6 +93,13 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
               {% for artist in artists %}
               <tr>
                 <td>{{ forloop.counter }}</td>
+                <td>
+                  {% if artist.avatar_url %}
+                  <img src="{{ artist.avatar_url.url }}" alt="Ảnh đại diện" style="max-width: 150px; height: auto;">
+                  {% else %}
+                  <span>Không có ảnh</span>
+                  {% endif %}
+              </td>
                 <td>{{ artist.name }}</td>
                 <td>{{ artist.bio }}</td>
                 <td
@@ -152,7 +168,9 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
   </div>
   <!-- /DATATABLE -->
 </div>
-{% endblock %} {% block custom_scripts %}
+{% endblock %} 
+
+{% block custom_scripts %}
 <script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
 <script src="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js' %}"></script>
 <script src="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js' %}"></script>
