@@ -1,0 +1,190 @@
+{% extends 'layouts/base-layout.html' %}
+{% load static %}
+
+{% block title %}
+Thêm mới album
+{% endblock %}
+
+{% block custom_css %}
+<style>
+    .ts-control{
+           padding: 12px;
+      }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Album</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'album_index' %}">Quản lý Album</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Thêm mới album</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="{% url 'album_index' %}" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thêm mới</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form action="{% url 'album_create' %}" id="general-settings" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Name">Tên album <strong class="text-danger">*</strong></label>
+                                        <input name="title"
+                                               type="text"
+                                               id="title"
+                                               class="form-control {% if form.title.errors %}is-invalid{% endif %}"
+                                               placeholder="Tên Album"
+                                               value="{{ form.title.value|default:'' }}">
+                                        {% for error in form.title.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="release_date">Ngày phát hành <strong class="text-danger">*</strong></label>
+                                        <input name="release_date"
+                                               type="date"
+                                               id="release_date"
+                                               class="form-control {% if form.release_date.errors %}is-invalid{% endif %}"
+                                               value="{{ form.release_date.value|default:today }}"
+                                               max="{{ today }}">
+                                        {% for error in form.release_date.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                                                     
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="image_url">Ảnh đại diện <strong class="text-danger">*</strong></label>
+                                        <input name="image"
+                                               type="file"
+                                               id="image_url"
+                                               accept="image/*"
+                                               required
+                                               class="form-control {% if form.image_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.image_url.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        <img id="selected-avatar" style="display: none; max-width: 50%; height: auto;" alt="Selected Image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="artist_search">Tên nghệ sĩ <strong class="text-danger">*</strong></label>
+                                <input type="text"
+                                       id="artist_search"
+                                       class="form-control"
+                                       placeholder="Nhập tên nghệ sĩ...">
+                                <div id="artist_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label for="selected_artist">Nghệ sĩ đã chọn</label>
+                                <input type="text"
+                                       id="selected_artist"
+                                       class="form-control"
+                                       readonly
+                                       style="color: black;">
+                                <input type="hidden" name="artist" id="artist_id"> <!-- field thực gửi -->
+                            </div>
+                            
+                            
+
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_scripts %}
+<script>
+    document.getElementById('image_url').addEventListener('change', function (event) {
+        const fileInput = event.target;
+        const previewImage = document.getElementById('selected-avatar');
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            previewImage.style.display = 'none';
+            previewImage.src = '';
+        }
+    });
+</script>
+
+{{ artists|json_script:"artist-data" }}
+
+<script>
+  
+    const artists = JSON.parse(document.getElementById('artist-data').textContent);
+    const input = document.getElementById('artist_search');
+    const suggestionBox = document.getElementById('artist_suggestions');
+    const selectedArtist = document.getElementById('selected_artist');
+    const hiddenArtistId = document.getElementById('artist_id');
+
+    input.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        suggestionBox.innerHTML = '';
+
+        if (query.length === 0) return;
+
+        const filtered = artists.filter(a => a.name.toLowerCase().includes(query));
+        filtered.forEach(artist => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = artist.name;
+            item.onclick = function () {
+                selectedArtist.value = artist.name;
+                hiddenArtistId.value = artist.id;
+                suggestionBox.innerHTML = '';
+                input.value = ''; 
+            };
+            suggestionBox.appendChild(item);
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+            suggestionBox.innerHTML = '';
+        }
+    });
+</script>
+
+{% endblock %}

@@ -123,6 +123,23 @@
 					</div>
 				</a>
 			</li>
+
+			<li class="menu {% if request.resolver_match.url_name == 'album_index' %}active{% elif request.resolver_match.url_name == 'album_create' %}active{% elif request.resolver_match.url_name == 'album_edit' %}active{% endif %}">
+				<a href="{% url 'album_index' %}" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+						viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+						class="feather feather-book">
+					 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+					 <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"></path>
+					 <path d="M20 22V2"></path>
+					 <path d="M4 22V2"></path>
+				   </svg>
+										   <span>Album</span>
+					</div>
+				</a>
+			</li>
 		</ul>
 
 	</nav>

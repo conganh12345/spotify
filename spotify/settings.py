@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.groups',
     'apps.artists',
     'apps.genres',
+    'apps.albums',
     'rest_framework',
 ]
 
