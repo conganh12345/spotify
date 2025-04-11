@@ -1,0 +1,374 @@
+{% extends 'layouts/base-layout.html' %} 
+{% load static %} 
+
+{% block title %}
+Chi tiết Album
+{% endblock %} 
+
+{% block custom_css %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/datatables.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/light/table/datatable/dt-global_style.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/dark/table/datatable/dt-global_style.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/light/table/datatable/custom_dt_custom.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/dark/table/datatable/custom_dt_custom.css' %}"
+/>
+{% endblock %} 
+
+{% block content %}
+<div>
+  <!-- BREADCRUMB -->
+  <div class="page-meta">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Album</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Quản lý Album
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <!-- /BREADCRUMB -->
+
+  <!-- DATATABLE -->
+  <div class="row layout-top-spacing">
+    <div class="col-xl-12 col-lg-12 col-sm-12">
+      <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+          <div class="row">
+            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+              <h4>Quản lý Album</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEARCH BOX-->
+        <div class="row mb-4 align-items-end">
+            <div class="col-md-5 position-relative">
+              <label for="song_search">Bài hát <strong class="text-danger">*</strong></label>
+              <input type="text"
+                     id="song_search"
+                     class="form-control"
+                     placeholder="Nhập tên bài hát...">
+              <div id="song_suggestions"
+                   class="list-group mt-1"
+                   style="position: absolute; z-index: 1000; width: 100%; max-height: 250px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+            </div>
+          
+            <div class="col-md-5">
+              <label for="selected_song">Bài hát đã chọn</label>
+              <input type="text"
+                     id="selected_song"
+                     class="form-control"
+                     readonly
+                     style="color: black;">
+              <input type="hidden" name="song" id="song_id">
+            </div>
+          
+            <div class="col-md-2">
+                <button type="button"
+                class="btn btn-sm add_song"
+                style="background-color: #007bff; color: white;"
+                
+                
+                      >
+          Thêm
+        </button>           
+            </div>
+          </div>
+          
+        
+
+        <div class="widget-content widget-content-area">
+          
+          <table
+            id="album-table"
+            class="table style-3 dt-table-hover"
+            style="width: 100%"
+          >
+            <thead>
+                <tr>
+                    <th style="width: 5%">ID</th>
+                    <th style="width: 25%">Tên</th>
+                    <th style="width: 20%">MP3</th>
+                    <th style="width: 20%">Nghệ sĩ</th>
+                    <th style="width: 20%">Thể loại</th>
+                    <th class="no-content" style="width: 10%">Thao tác</th>
+                </tr>
+                  
+            </thead>
+            <tbody>
+              {% for song in songs %}
+              <tr>
+                <td>{{ song.id }}</td>
+                <td>{{ song.title }}</td>
+                {% url 'song_file' song.id as song_file_url %}
+                <td style="cursor: pointer; color: #007bff; text-decoration: underline; font-weight: 500;" 
+                onclick="window.open('{{ song_file_url }}', '_blank')">
+                LINK
+            </td>
+                <td>{{ song.artist.name }}</td>
+                <td>{{ song.genre.name }}</td>
+
+                <td
+                  class="table-controls justify-content-center align-items-center pt-2"
+                >
+                  
+                  <li>
+                    <a
+                      href="#"
+                      class="bs-tooltip delete"
+                      data-song-id="{{ song.id }}"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-trash p-1 br-6 mb-1"
+                      >
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path
+                          d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                        ></path>
+                      </svg>
+                    </a>
+                  </li>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /DATATABLE -->
+</div>
+{% endblock %} 
+
+{% block custom_scripts %}
+<script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
+<script src="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js' %}"></script>
+<script src="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js' %}"></script>
+<script>
+  $("#album-table").DataTable({
+    dom:
+      "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+      "<'table-responsive'tr>" +
+      "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+    oLanguage: {
+      oPaginate: {
+        sPrevious:
+          '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+        sNext:
+          '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>',
+      },
+      sEmptyTable: "Chưa có dữ liệu",
+      sInfo: "Đang hiển thị trang _PAGE_ của _PAGES_",
+      sSearch:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+      sSearchPlaceholder: "Tìm kiếm...",
+      sZeroRecords: "Không có bản ghi nào trùng khớp",
+      sLengthMenu: "Kết quả :  _MENU_",
+    },
+    stripeClasses: [],
+    lengthMenu: [7, 10, 20, 50],
+    pageLength: 10,
+    ordering: false,
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    let songIdToDelete;
+
+    $(".delete").on("click", function (e) {
+      e.preventDefault();
+      songIdToDelete = $(this).data("song-id");
+      $("#deleteModal").modal("show");
+    });
+
+    $("#confirmDelete").on("click", function () {
+      $.ajax({
+        url: "{% url 'delete_song_in_album' 0 %}".replace("0", songIdToDelete),
+        type: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+        success: function (response) {
+          Snackbar.show({
+            text: "Xóa bài hát khỏi album thành công",
+            textColor: "#ddf5f0",
+            backgroundColor: "#00ab55",
+            actionText: "Bỏ qua",
+            actionTextColor: "#3b3f5c",
+          });
+
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        },
+        error: function () {
+          Snackbar.show({
+            text: "Xóa bài hát khỏi album thất bại",
+            textColor: "#fbeced",
+            backgroundColor: "#e7515a",
+            actionText: "Bỏ qua",
+            actionTextColor: "#3b3f5c",
+          });
+        },
+      });
+      $("#deleteModal").modal("hide");
+    });
+  });
+</script>
+
+
+{{ all_songs|json_script:"songs-data" }}
+<script>
+    const songs = JSON.parse(document.getElementById('songs-data').textContent);
+    const input_song = document.getElementById('song_search');
+    const suggestionBox_song = document.getElementById('song_suggestions');
+    const selectedSong = document.getElementById('selected_song');
+    const hiddenSongId = document.getElementById('song_id');
+
+    input_song.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        suggestionBox_song.innerHTML = '';
+
+        if (query.length === 0) return;
+
+        const filtered = songs.filter(song => song.title.toLowerCase().includes(query));
+        filtered.forEach(song => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = song.title;
+            item.onclick = function () {
+                selectedSong.value = song.title;
+                hiddenSongId.value = song.id;
+                hiddenSongId.dataset.albumId = song.album_id;
+                suggestionBox_song.innerHTML = '';
+                input_song.value = ''; 
+            };
+            suggestionBox_song.appendChild(item);
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!suggestionBox_song.contains(e.target) && e.target !== input_song) {
+            suggestionBox_song.innerHTML = '';
+        }
+    });
+</script>
+
+<script>
+  function getAlbumIdFromUrl() {
+  const urlParts = window.location.pathname.split('/');
+  // Ví dụ: ["", "album", "detail", "3", ""]
+  const albumId = urlParts[3]; // vị trí thứ 3 là album_id
+  return albumId;
+}
+
+  $(document).ready(function () {
+    $(".add_song").on("click", function (e) {
+      e.preventDefault();     
+      
+      const hiddenSongId = document.getElementById('song_id');
+      if(hiddenSongId.value==='' || hiddenSongId===null){
+        return;
+      }
+      const songIdToAdd = hiddenSongId.value;
+      const albumIdToAdd = getAlbumIdFromUrl();
+
+      $.ajax({
+        url: `/album/detail/add/${songIdToAdd}/${albumIdToAdd}`,
+
+        type: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+        success: function (response) {
+          if (response.exist) {
+            Snackbar.show({
+              text: "Bài hát đã tồn tại trong album",
+              textColor: "#212529",
+              backgroundColor: "#ffc107",
+              actionText: "Bỏ qua",
+              actionTextColor: "#3b3f5c",
+            });
+          } else if (response.orther_album) {
+            Snackbar.show({
+              text: "Bài hát này đang ở Album KHÁC",
+              textColor: "#212529",
+              backgroundColor: "#ffc107",
+              actionText: "Bỏ qua",
+              actionTextColor: "#3b3f5c",
+            });
+          } else if (response.success) {
+            Snackbar.show({
+              text: "Thêm bài hát vào album thành công",
+              textColor: "#ddf5f0",
+              backgroundColor: "#00ab55",
+              actionText: "Bỏ qua",
+              actionTextColor: "#3b3f5c",
+            });
+          }
+
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        },
+        error: function () {
+          Snackbar.show({
+            text: "Thêm bài hát thất bại",
+            textColor: "#fbeced",
+            backgroundColor: "#e7515a",
+            actionText: "Bỏ qua",
+            actionTextColor: "#3b3f5c",
+          });
+        },
+      });
+    });
+  });
+</script>
+
+
+{% endblock %}
