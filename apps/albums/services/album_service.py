@@ -28,3 +28,6 @@ class AlbumService:
             raise ValidationError('Album không tồn tại')
         self.album_repo.delete(album)
         return True
+
+    def get_all_songs_album_id(self,id):
+        return self.album_repo.get_all_songs_album_id(id)

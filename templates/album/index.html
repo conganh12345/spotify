@@ -93,7 +93,8 @@ Quản lý album
             </thead>
             <tbody>
               {% for album in albums %}
-              <tr>
+              {% url 'detail_album' album.id as detail_album %}
+                <tr onclick="window.open('{{ detail_album }}', '_blank')" style="cursor: pointer;" >
                 <td>{{ album.id }}</td>
                 <td>{{ album.title }}</td>
                 <td>{{ album.release_date }}</td>
