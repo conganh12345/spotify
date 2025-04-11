@@ -28,5 +28,7 @@ urlpatterns = [
     path('genre/',include('apps.genres.urls')),
     path('api/', include('apps.genres.api_urls')), 
     path('album/',include('apps.albums.urls')),
+    path('song/',include('apps.songs.urls')),
+
    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

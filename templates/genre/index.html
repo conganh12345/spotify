@@ -83,7 +83,7 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
             <tbody>
               {% for genre in genres %}
               <tr>
-                <td>{{ forloop.counter }}</td>
+                <td>{{ genre.id }}</td>
                 <td>{{ genre.name }}</td>
                 <td>{{ genre.description }}</td>
                 <td

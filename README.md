@@ -38,4 +38,4 @@
 
 7. Cài thư viện này để tạo API
   - pip install djangorestframework
-
+  - pip install mutagen (thư viện để tính thời gian file MP3)
