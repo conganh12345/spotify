@@ -94,7 +94,7 @@ Quản lý album
             <tbody>
               {% for album in albums %}
               <tr>
-                <td>{{ forloop.counter }}</td>
+                <td>{{ album.id }}</td>
                 <td>{{ album.title }}</td>
                 <td>{{ album.release_date }}</td>
                 <td>{{ album.artist.name }}</td>

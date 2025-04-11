@@ -1,0 +1,294 @@
+{% extends 'layouts/base-layout.html' %}
+{% load static %}
+
+{% block title %}
+Thêm mới bài hát
+{% endblock %}
+
+{% block custom_css %}
+<style>
+    .ts-control{
+           padding: 12px;
+      }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Bài hát</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'song_index' %}">Quản lý bài hát</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Thêm mới bài hát</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="{% url 'song_index' %}" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thêm mới</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form action="{% url 'song_create' %}" id="general-settings" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Name">Tên bài hát <strong class="text-danger">*</strong></label>
+                                        <input name="title"
+                                               type="text"
+                                               id="title"
+                                               class="form-control {% if form.title.errors %}is-invalid{% endif %}"
+                                               placeholder="Tên Bài hát"
+                                               value="{{ form.title.value|default:'' }}">
+                                        {% for error in form.title.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="file_url">File âm thanh <strong class="text-danger">*</strong></label>
+                                        <input name="file"
+                                               type="file"
+                                               id="file_url"
+                                               accept="audio/*"
+                                               required
+                                               class="form-control {% if form.file_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.file_url.errors %}
+                                            <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        <audio id="audio-preview" controls style="display: none; margin-top: 10px; width: 100%;">
+                                            <source id="audio-source" src="" type="audio/mpeg">
+                                            Trình duyệt không hỗ trợ audio.
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- ARTISTSARTISTS-->
+                            <div class="form-group mb-4">
+                                <label for="artist_search">Tên nghệ sĩ <strong class="text-danger">*</strong></label>
+                                <input type="text"
+                                       id="artist_search"
+                                       class="form-control"
+                                       placeholder="Nhập tên nghệ sĩ...">
+                                <div id="artist_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label for="selected_artist">Nghệ sĩ đã chọn</label>
+                                <input type="text"
+                                       id="selected_artist"
+                                       class="form-control"
+                                       readonly
+                                       style="color: black;">
+                                <input type="hidden" name="artist" id="artist_id"> <!-- field thực gửi -->
+                            </div>
+                            
+                            <!--  ALBUM -->
+                            <div class="form-group mb-4">
+                                <label for="album_search">Tên Album <strong class="text-danger">*</strong></label>
+                                <input type="text"
+                                       id="album_search"
+                                       class="form-control"
+                                       placeholder="Nhập tên album...">
+                                <div id="album_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label for="selected_album">Album đã chọn</label>
+                                <input type="text"
+                                       id="selected_album"
+                                       class="form-control"
+                                       readonly
+                                       style="color: black;">
+                                <input type="hidden" name="album" id="album_id"> <!-- field thực gửi -->
+                            </div>
+
+                            <!-- GENRE -->
+                            <div class="form-group mb-4">
+                                <label for="genre_search">Thể loại <strong class="text-danger">*</strong></label>
+                                <input type="text"
+                                       id="genre_search"
+                                       class="form-control"
+                                       placeholder="Nhập tên thể loại...">
+                                <div id="genre_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label for="selected_genre">Thể loại đã chọn</label>
+                                <input type="text"
+                                       id="selected_genre"
+                                       class="form-control"
+                                       readonly
+                                       style="color: black;">
+                                <input type="hidden" name="genre" id="genre_id"> <!-- field thực gửi -->
+                            </div>
+                            
+
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_scripts %}
+<script>
+    const fileInput = document.getElementById('file_url');
+    const audioPreview = document.getElementById('audio-preview');
+    const audioSource = document.getElementById('audio-source');
+
+    fileInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            audioSource.src = url;
+            audioPreview.load();
+            audioPreview.style.display = 'block';
+        } else {
+            audioPreview.style.display = 'none';
+        }
+    });
+</script>
+
+{{ artists|json_script:"artist-data" }}
+{{ albums|json_script:"album-data" }}
+{{ genres|json_script:"genre-data" }}
+
+<script>
+  
+    const artists = JSON.parse(document.getElementById('artist-data').textContent);
+    const input = document.getElementById('artist_search');
+    const suggestionBox = document.getElementById('artist_suggestions');
+    const selectedArtist = document.getElementById('selected_artist');
+    const hiddenArtistId = document.getElementById('artist_id');
+
+    input.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        suggestionBox.innerHTML = '';
+
+        if (query.length === 0) return;
+
+        const filtered = artists.filter(a => a.name.toLowerCase().includes(query));
+        filtered.forEach(artist => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = artist.name;
+            item.onclick = function () {
+                selectedArtist.value = artist.name;
+                hiddenArtistId.value = artist.id;
+                suggestionBox.innerHTML = '';
+                input.value = ''; 
+            };
+            suggestionBox.appendChild(item);
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+            suggestionBox.innerHTML = '';
+        }
+    });
+</script>
+
+<script>
+  
+    const albums = JSON.parse(document.getElementById('album-data').textContent);
+    const input_album = document.getElementById('album_search');
+    const suggestionBox_album = document.getElementById('album_suggestions');
+    const selectedAlbum = document.getElementById('selected_album');
+    const hiddenAlbumId = document.getElementById('album_id');
+
+    input_album.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        suggestionBox_album.innerHTML = '';
+
+        if (query.length === 0) return;
+
+        const filtered = albums.filter(a => a.title.toLowerCase().includes(query));
+        filtered.forEach(album => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = album.title;
+            item.onclick = function () {
+                selectedAlbum.value = album.title;
+                hiddenAlbumId.value = album.id;
+                suggestionBox_album.innerHTML = '';
+                input_album.value = ''; 
+            };
+            suggestionBox_album.appendChild(item);
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!suggestionBox_album.contains(e.target) && e.target !== input) {
+            suggestionBox_album.innerHTML = '';
+        }
+    });
+</script>
+
+<script>
+    const genres = JSON.parse(document.getElementById('genre-data').textContent);
+    const input_genre = document.getElementById('genre_search');
+    const suggestionBox_genre = document.getElementById('genre_suggestions');
+    const selectedGenre = document.getElementById('selected_genre');
+    const hiddenGenreId = document.getElementById('genre_id');
+
+    input_genre.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        suggestionBox_genre.innerHTML = '';
+
+        if (query.length === 0) return;
+
+        const filtered = genres.filter(genre => genre.name.toLowerCase().includes(query));
+        filtered.forEach(genre => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = genre.name;
+            item.onclick = function () {
+                selectedGenre.value = genre.name;
+                hiddenGenreId.value = genre.id;
+                suggestionBox_genre.innerHTML = '';
+                input_genre.value = ''; 
+            };
+            suggestionBox_genre.appendChild(item);
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!suggestionBox_genre.contains(e.target) && e.target !== input_genre) {
+            suggestionBox_genre.innerHTML = '';
+        }
+    });
+</script>
+
+
+
+{% endblock %}
