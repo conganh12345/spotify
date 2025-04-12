@@ -33,7 +33,7 @@ def artist_follow(request,artist_id):
 
 @login_required
 def artist_unfollow(request,artist_id):
-    if request.method == HTTP_METHOD_POST:
+    if request.method == HTTP_METHOD_DELETE:
         try:
             user_id = request.user.id  
             is_success = artist_follow_repo.delete_by_user_and_artist(user_id, artist_id)
