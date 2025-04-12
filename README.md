@@ -39,3 +39,5 @@
 7. Cài thư viện này để tạo API
   - pip install djangorestframework
   - pip install mutagen (thư viện để tính thời gian file MP3)
+  - pip install django-cors-headers (Để Django chấp nhận cookie từ ReactJS, bạn   cần cấu hình CORS và bật CORS_ALLOW_CREDENTIALS.)
+
