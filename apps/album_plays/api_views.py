@@ -19,10 +19,12 @@ from django.contrib.auth.decorators import login_required
 
 album_play_repo = AlbumPlayService()
 
-def add(request, album_id):
+def add(request):
     if request.method == HTTP_METHOD_POST:
         try:
             user_id = request.user_id
+            data = json.loads(request.body)
+            album_id = data.get('album_id')
             album_play_repo.add(user_id,album_id)
             return JsonResponse({'success': True})
         except Exception as e:

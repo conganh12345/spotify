@@ -19,9 +19,11 @@ from django.contrib.auth.decorators import login_required
 
 artist_follow_repo = ArtistFollowService()
 @login_required
-def artist_follow(request,artist_id):
+def artist_follow(request):
     if request.method == HTTP_METHOD_POST:
         try:
+            data = json.loads(request.body)
+            artist_id = data.get('artist_id')
             user_id = request.user.id  
             artist_follow_repo.add(user_id, artist_id)
             return JsonResponse({'success': True , 'message':'Follow thành công'})

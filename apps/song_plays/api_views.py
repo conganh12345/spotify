@@ -19,9 +19,11 @@ from django.contrib.auth.decorators import login_required
 
 song_play_repo = SongPlayService()
 
-def add(request, song_id):
+def add(request):
     if request.method == HTTP_METHOD_POST:
         try:
+            data = json.loads(request.body)
+            song_id = data.get('song_id')
             user_id = request.user_id
             song_play_repo.add(user_id,song_id)
             return JsonResponse({'success': True})
