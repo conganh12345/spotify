@@ -18,7 +18,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 artist_follow_repo = ArtistFollowService()
-@login_required
 def artist_follow(request):
     if request.method == HTTP_METHOD_POST:
         try:
@@ -33,7 +32,6 @@ def artist_follow(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-@login_required
 def artist_unfollow(request,artist_id):
     if request.method == HTTP_METHOD_DELETE:
         try:
@@ -52,7 +50,6 @@ def artist_unfollow(request,artist_id):
 
 
 
-@login_required
 def artist_is_followed(request, artist_id):
     if request.method == HTTP_METHOD_GET:
         try:
@@ -68,7 +65,6 @@ def artist_is_followed(request, artist_id):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-@login_required
 def get_all_artist_follows(request):
     if request.method == HTTP_METHOD_GET:
         try:

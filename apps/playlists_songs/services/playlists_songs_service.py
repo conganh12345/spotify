@@ -10,9 +10,9 @@ class PlaylistSongService:
     def is_added_before(self,playlist_id,song_id):
         return self.playlists_songs_repo.is_added_before(playlist_id=playlist_id,song_id=song_id)
     def add(self,playlist_id,song_id):
-        return self.playlists_songs_repo.add(playlist_id=playlist_id,song_id=song_id)
+        self.playlists_songs_repo.add(playlist_id=playlist_id,song_id=song_id)
     def delete(self,playlist_id,song_id):
-        return self.playlists_songs_repo.delete(playlist_id=playlist_id,song_id=song_id)
+        self.playlists_songs_repo.delete(playlist_id=playlist_id,song_id=song_id)
     def delete_all_songs_playlist_id(self,playlist_id):
-        return self.playlists_songs_repo.delete_all_songs_playlist_id(playlist_id)
+        self.playlists_songs_repo.delete_all_songs_playlist_id(playlist_id)
     

@@ -9,4 +9,4 @@ class PlaylistService:
     def add(self,name,user_id):
         return self.playlist_repo.add(name=name,user_id=user_id)
     def delete(self,playlist_id):
-        return self.playlist_repo.delete(playlist_id)
+        self.playlist_repo.delete(playlist_id)
