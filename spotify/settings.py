@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'apps.albums',
     'apps.songs',
     'apps.artist_follows',
+    'apps.album_plays',
+    'apps.song_plays',
     'rest_framework',
 ]
 CORS_ALLOWED_ORIGINS = [
