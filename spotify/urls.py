@@ -32,6 +32,9 @@ urlpatterns = [
     path('api/',include('apps.artist_follows.api_urls')),
     path('api/',include('apps.album_plays.api_urls')),
     path('api/',include('apps.song_plays.api_urls')),
+    path('api/',include('apps.songs.api_urls')),
+    path('api/',include('apps.playlists.api_urls')),
+    path('api/',include('apps.playlists_songs.api_urls')),
 
 
 

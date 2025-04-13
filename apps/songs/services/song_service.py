@@ -28,3 +28,7 @@ class SongService:
             raise ValidationError('Bài hát không tồn tại')
         self.song_repo.delete(song)
         return True
+    def search_song(self, keyword):
+        return self.song_repo.search_songs(keyword)
+    def get_songs_by_genre_id(self,genre_id):
+        return self.song_repo.get_songs_by_genre_id(genre_id)

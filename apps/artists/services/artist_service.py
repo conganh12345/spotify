@@ -20,3 +20,7 @@ class ArtistService:
         artist = self.artist_repo.get(artist_id)
         self.artist_repo.delete(artist)
         return True
+    
+    def search_artist(self, keyword):
+        return self.artist_repo.search_artist(keyword)
+    

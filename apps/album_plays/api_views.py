@@ -22,7 +22,7 @@ album_play_repo = AlbumPlayService()
 def add(request):
     if request.method == HTTP_METHOD_POST:
         try:
-            user_id = request.user_id
+            user_id = request.user.id
             data = json.loads(request.body)
             album_id = data.get('album_id')
             album_play_repo.add(user_id,album_id)
@@ -30,7 +30,6 @@ def add(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
-
 
 def count_plays(request,album_id):
     if request.method == HTTP_METHOD_GET:
