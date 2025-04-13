@@ -31,3 +31,6 @@ class AlbumService:
 
     def get_all_songs_album_id(self,id):
         return self.album_repo.get_all_songs_album_id(id)
+    
+    def search_album(self,keyword):
+        return self.album_repo.search_album(keyword)

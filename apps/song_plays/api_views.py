@@ -24,7 +24,7 @@ def add(request):
         try:
             data = json.loads(request.body)
             song_id = data.get('song_id')
-            user_id = request.user_id
+            user_id = request.user.id
             song_play_repo.add(user_id,song_id)
             return JsonResponse({'success': True})
         except Exception as e:

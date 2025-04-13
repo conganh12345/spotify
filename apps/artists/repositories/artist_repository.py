@@ -5,5 +5,9 @@ from apps.artists.repositories.artist_repository_interface import Artistepositor
 class ArtistRepository(BaseRepository, ArtistepositoryInterface):
     def __init__(self):
         super().__init__(Artist)
+    
+    def search_artist(self, keyword):
+        return Artist.objects.filter(name__icontains=keyword)
+
 
 

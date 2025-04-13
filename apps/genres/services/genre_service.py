@@ -7,7 +7,8 @@ class GenreService:
 
     def get_all_genres(self):
         return self.genre_repo.all()
-
+    def get_genre_id(self,genre_id):
+        return self.genre_repo.get_genre_id(genre_id)
     def create_genre(self, form):
         genre_data = form.cleaned_data
         genre = self.genre_repo.create(**genre_data)
