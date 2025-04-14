@@ -114,29 +114,29 @@
 			<li class="menu {% if request.resolver_match.url_name == 'genre_index' %}active{% elif request.resolver_match.url_name == 'genre_create' %}active{% elif request.resolver_match.url_name == 'genre_edit' %}active{% endif %}">
 				<a href="{% url 'genre_index' %}" class="dropdown-toggle">
 					<div>
-<!-- NEW - feather-tag -->
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag">
-	<path d="M20.59 13.41L11 3 3 11l9.59 9.59a2 2 0 0 0 2.83 0l5.17-5.17a2 2 0 0 0 0-2.83z"></path>
-	<line x1="7" y1="7" x2="7" y2="7"></line>
-  </svg>
+						<!-- NEW - feather-tag -->
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag">
+							<path d="M20.59 13.41L11 3 3 11l9.59 9.59a2 2 0 0 0 2.83 0l5.17-5.17a2 2 0 0 0 0-2.83z"></path>
+							<line x1="7" y1="7" x2="7" y2="7"></line>
+						</svg>
 						  <span>Thể loại</span>
 					</div>
 				</a>
 			</li>
 
-			<li class="menu {% if request.resolver_match.url_name == 'album_index' %}active{% elif request.resolver_match.url_name == 'album_create' %}active{% elif request.resolver_match.url_name == 'album_edit' %}active{% endif %}">
+			<li class="menu {% if request.resolver_match.url_name == 'album_index' %}active{% elif request.resolver_match.url_name == 'album_create' %}active{% elif request.resolver_match.url_name == 'album_edit' %}active{% elif request.resolver_match.url_name == 'detail_album' %}active{% endif %}">
 				<a href="{% url 'album_index' %}" class="dropdown-toggle">
 					<div>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-						viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-						class="feather feather-book">
-					 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-					 <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"></path>
-					 <path d="M20 22V2"></path>
-					 <path d="M4 22V2"></path>
-				   </svg>
-										   <span>Album</span>
+							viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+							stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+							class="feather feather-book">
+						<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+						<path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"></path>
+						<path d="M20 22V2"></path>
+						<path d="M4 22V2"></path>
+					</svg>
+						<span>Album</span>
 					</div>
 				</a>
 			</li>
@@ -145,16 +145,16 @@
 				<a href="{% url 'song_index' %}" class="dropdown-toggle">
 					<div>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-     class="feather feather-music">
-  <path d="M9 18V5l12-2v13"></path>
-  <circle cx="6" cy="18" r="3"></circle>
-  <circle cx="18" cy="16" r="3"></circle>
-</svg>
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="feather feather-music">
+							<path d="M9 18V5l12-2v13"></path>
+							<circle cx="6" cy="18" r="3"></circle>
+							<circle cx="18" cy="16" r="3"></circle>
+						</svg>
 
 						  
-										   <span>Bài hát</span>
+						<span>Bài hát</span>
 					</div>
 				</a>
 			</li>

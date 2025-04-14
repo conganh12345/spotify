@@ -86,12 +86,10 @@ Quản lý bài hát
                 <tr>
                     <th style="width: 5%">ID</th>
                     <th style="width: 15%">Tên</th>
-                    <th style="width: 10%">Thời gian</th>   
-                    <th style="width: 15%">MP4</th> 
-                    <th style="width: 15%">Thể loại</th>
-                    <th style="width: 15%">Ca sĩ</th>
-                    <th style="width: 15%">Album</th>
-                    <th style="width: 10%">Ngày tạo</th>
+                    <th style="width: 20%">Chi tiết</th>
+                    <th>Thời lượng</th>   
+                    <th>MP4</th> 
+                    <th>Ngày tạo</th>
                     <th class="no-content" style="width: 5%">Thao tác</th>
                   </tr>
                   
@@ -101,17 +99,44 @@ Quản lý bài hát
               <tr>
                 <td>{{ song.id }}</td>
                 <td>{{ song.title }}</td>
+                <td>
+                  <p class="text-start me-1">
+                      Thể loại:
+                      <span class="text-primary">{{ song.genre.name }}</span>
+                  </p>
+                  <p class="text-start me-1">
+                      Ca sĩ:
+                      <span class="text-primary">{{ song.artist.name }}</span>
+                  </p>
+                  <p class="text-start me-1">
+                      Album:
+                      <span class="text-primary">
+                        {% if song.album %}
+                        {{ song.album.title }}
+                        {% else %}
+                          Không
+                        {% endif %}
+                      </span>
+                  </p>
+                </td>  
                 <td>{{ song.duration|duration_format }}</td>
                 
                 {% url 'song_file' song.id as song_file_url %}
-<td style="cursor: pointer; color: #007bff; text-decoration: underline; font-weight: 500;" 
-    onclick="window.open('{{ song_file_url }}', '_blank')">
-    LINK
-</td>
+                <td>
+                    <a onclick="window.open('{{ song_file_url }}', '_blank')" target="_blank" class="btn-warning p-2 rounded text-nowrap">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"
+                        >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>LINK
+                    </a>`;
+                </td>
 
-
-
-<!--
+                <!--
                 <td style="cursor: pointer; ">
                   
                     <audio controls style="width: 100%;">
@@ -122,18 +147,8 @@ Quản lý bài hát
                     
                 </td>
                 -->
-                      
-                <td>{{ song.genre.name }}</td>
-                <td>{{ song.artist.name }}</td>
-                <td>
-                  {% if song.album %}
-                    {{ song.album.title }}
-                  {% else %}
-                    Không
-                  {% endif %}
-                </td>                <td>{{ song.created_at }}</td>
 
-                
+                <td>{{ song.created_at }}</td>
                 <td
                   class="table-controls justify-content-center align-items-center pt-2"
                 >
