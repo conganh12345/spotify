@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'apps.song_plays',
     'apps.playlists',
     'apps.playlists_songs',
+    'apps.chats',
+    'apps.chat_messages',
     'rest_framework',
 ]
 CORS_ALLOWED_ORIGINS = [
