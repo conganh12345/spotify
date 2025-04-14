@@ -41,6 +41,26 @@ Chi tiết Album
   type="text/css"
   href="{% static 'css/plugins/dark/table/datatable/custom_dt_custom.css' %}"
 />
+<style>
+  .search-box {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+  }
+  .search-box .form-group {
+    flex: 1;
+  }
+  .table-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .table-controls a {
+    color: #e7515a;
+    cursor: pointer;
+  }
+</style>
 {% endblock %} 
 
 {% block content %}
@@ -50,13 +70,21 @@ Chi tiết Album
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Album</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'album_index' %}">Quản lý Album</a></li>
         <li class="breadcrumb-item active" aria-current="page">
-          Quản lý Album
+          Chi tiết bài hát Album
         </li>
       </ol>
     </nav>
   </div>
   <!-- /BREADCRUMB -->
+
+
+  <div class="layout-top-spacing col-12">
+    <a href="{% url 'album_index' %}" class="btn">
+        Trở lại quản lý album
+    </a>
+</div>
 
   <!-- DATATABLE -->
   <div class="row layout-top-spacing">
@@ -65,51 +93,44 @@ Chi tiết Album
         <div class="widget-header">
           <div class="row">
             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Quản lý Album</h4>
+              <h4>Danh sách bài hát của Album</h4>
             </div>
           </div>
         </div>
 
         <!-- SEARCH BOX-->
-        <div class="row mb-4 align-items-end">
-            <div class="col-md-5 position-relative">
-              <label for="song_search">Bài hát <strong class="text-danger">*</strong></label>
-              <input type="text"
-                     id="song_search"
-                     class="form-control"
-                     placeholder="Nhập tên bài hát...">
-              <div id="song_suggestions"
-                   class="list-group mt-1"
-                   style="position: absolute; z-index: 1000; width: 100%; max-height: 250px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px;">
+        <div class="widget-content widget-content-area">
+          <div class="row mb-4 align-items-end p-3">
+              <div class="col-md-5 position-relative mb-2">
+                <label for="song_search">Bài hát </label>
+                <input type="text"
+                      id="song_search"
+                      class="form-control"
+                      placeholder="Nhập tên bài hát...">
+                <div id="song_suggestions"
+                    class="list-group mt-1"
+                    style="position: absolute; z-index: 1000; width: 100%; max-height: 250px; overflow-y: auto; border: 0.1px solid #ccc; border-radius: 4px;">
+                </div>
+              </div>
+            
+              <div class="col-md-5 mb-2">
+                <label for="selected_song">Bài hát đã chọn</label>
+                <input type="text"
+                      id="selected_song"
+                      class="form-control"
+                      readonly
+                      style="color: black;">
+                <input type="hidden" name="song" id="song_id">
+              </div>
+            
+              <div class="col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary add_song">Thêm bài hát</button>           
               </div>
             </div>
-          
-            <div class="col-md-5">
-              <label for="selected_song">Bài hát đã chọn</label>
-              <input type="text"
-                     id="selected_song"
-                     class="form-control"
-                     readonly
-                     style="color: black;">
-              <input type="hidden" name="song" id="song_id">
-            </div>
-          
-            <div class="col-md-2">
-                <button type="button"
-                class="btn btn-sm add_song"
-                style="background-color: #007bff; color: white;"
-                
-                
-                      >
-          Thêm
-        </button>           
-            </div>
-          </div>
-          
+        </div>
         
 
         <div class="widget-content widget-content-area">
-          
           <table
             id="album-table"
             class="table style-3 dt-table-hover"
