@@ -16,7 +16,6 @@ from apps.songs.services.song_service import SongService
 album_repo = AlbumService()
 artist_repo = ArtistService()
 song_repo = SongService()
-
 @login_required
 def index(request):
     albums = album_repo.get_all_albums()
@@ -144,9 +143,3 @@ def add_song_in_album(request, song_id, album_id):
         except ValidationError as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
-
-
-
-
-
-        

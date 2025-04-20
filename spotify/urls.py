@@ -33,15 +33,14 @@ urlpatterns = [
     path('api/',include('apps.album_plays.api_urls')),
     path('api/',include('apps.song_plays.api_urls')),
     path('api/',include('apps.songs.api_urls')),
-    path('api/',include('apps.albums.api_urls')),
     path('api/',include('apps.playlists.api_urls')),
     path('api/',include('apps.playlists_songs.api_urls')),
     path('api/',include('apps.chats.api_urls')),
     path('api/',include('apps.chat_messages.api_urls')),
-    # path('api/',include('apps.notifications.api_urls')),
-    # path('api/',include('apps.groups.api_urls')),
-    # path('api/',include('apps.users.api_urls')),
-    
 
- 
+
+
+
+
+   
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
