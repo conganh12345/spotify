@@ -10,5 +10,4 @@ urlpatterns = [
     path('detail/<int:id>/', views.detail_album, name='detail_album'),
     path('detail/delete/<int:id>/', views.delete_song_in_album, name='delete_song_in_album'),
     path('detail/add/<int:song_id>/<int:album_id>', views.add_song_in_album, name='add_song_in_album'),
-
 ]

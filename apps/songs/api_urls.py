@@ -4,4 +4,5 @@ from . import api_views
 
 urlpatterns = [
     path('songs/', api_views.search_songs, name='search_songs'),
+    path('songs/<song_id>/', api_views.get_detail_songs, name='search_songs'),
 ]
