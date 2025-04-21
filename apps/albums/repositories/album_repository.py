@@ -15,8 +15,8 @@ class AlbumRepository(BaseRepository, AlbumRepositoryInterface):
         return Song.objects.filter(album_id=id).select_related('artist','genre','album')
     def search_album(self,keyword):
         return Album.objects.filter(
-            Q(title_icontains=keyword)|
-            Q(artist_name_icontains = keyword)
+            Q(title__icontains=keyword)|
+            Q(artist__name__icontains = keyword)
         )
 
    

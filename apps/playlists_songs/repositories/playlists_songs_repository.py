@@ -7,7 +7,7 @@ class PlaylistSongRepository(BaseRepository, PlaylistSongRepositoryInterface):
     def __init__(self):
         super().__init__(PlaylistSong)
     def get_songs_in_playlist_id(self,playlist_id):
-        return PlaylistSong.objects.filter(playlist_id==playlist_id).select_related('song').all()
+        return PlaylistSong.objects.filter(playlist_id=playlist_id).select_related('song').all()
     def is_added_before(self,song_id, playlist_id):
         try:
             return PlaylistSong.objects.get(song_id=song_id,playlist_id=playlist_id)
