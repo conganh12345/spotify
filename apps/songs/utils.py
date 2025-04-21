@@ -42,3 +42,21 @@ def format_duration(seconds):
     minutes = seconds // 60
     remaining_seconds = seconds % 60
     return f"{minutes}:{remaining_seconds:02d}"
+
+def delete_song_image(image_url):
+    if image_url:
+        image_path = os.path.join(settings.MEDIA_ROOT, image_url)
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
+def handle_song_image_upload(file):
+    ext = file.name.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    folder = 'album_images'
+    path = os.path.join(settings.MEDIA_ROOT, folder, filename)
+
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
+    with open(path, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)

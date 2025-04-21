@@ -103,6 +103,24 @@ Chỉnh sửa bài hát
                                        placeholder="Nhập tên nghệ sĩ...">
                                 <div id="artist_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="image_url">Ảnh đại diện <strong class="text-danger">*</strong></label>
+                                        <input name="image"
+                                               type="file"
+                                               id="image_url"
+                                               accept="image/*"
+                    
+                                               class="form-control {% if form.image_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.image_url.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        <img src="/media/{{ song.image_url }}" id="selected-avatar" style="max-width: 50%; height: auto;" alt="Selected Image">
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div class="form-group mb-4">
                                 <label for="selected_artist">Nghệ sĩ đã chọn</label>

@@ -8,6 +8,9 @@ class ArtistRepository(BaseRepository, ArtistepositoryInterface):
     
     def search_artist(self, keyword):
         return Artist.objects.filter(name__icontains=keyword)
+    
+    def get_artist_id(self, id):
+        return Artist.objects.prefetch_related('songs__album').get(pk=id)
 
 
 

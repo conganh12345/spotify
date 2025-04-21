@@ -9,7 +9,7 @@ from apps.songs.forms.song_edit_form import SongEditForm
 from apps.albums.services.album_service import AlbumService
 from apps.genres.services.genre_service import GenreService
 from apps.common.constants import HTTP_METHOD_POST
-from apps.songs.utils import handle_song_file_upload, delete_song_file, get_audio_duration
+from apps.songs.utils import delete_song_image, handle_song_file_upload, delete_song_file, get_audio_duration, handle_song_image_upload
 from apps.artists.services.artist_service import ArtistService 
 from apps.songs.services.song_service import SongService 
 from datetime import date
@@ -36,19 +36,32 @@ def create_song(request):
     genres_json = list(genres.values('id','name'))
     if request.method == HTTP_METHOD_POST:
         form = SongCreateForm(request.POST)
+        image_url = None
+        file_url = None
+        duration = 0
         if form.is_valid():
-            audio_file = request.FILES.get('file')
-            if audio_file:
-                file_url = handle_song_file_upload(audio_file)
-                duration = get_audio_duration(audio_file)
-            song_data = form.cleaned_data
-            song_data['file_url']=file_url
-            song_data['duration']=duration
-            song_repo.create_song(song_data)
-            messages.success(request, 'Thêm bài hát thành công!')
-            return redirect('song_index')
+            try:
+                image_file = request.FILES.get('image')
+                if image_file:
+                    image_url = handle_song_image_upload(image_file)
+
+                audio_file = request.FILES.get('file')
+                if audio_file:
+                    file_url = handle_song_file_upload(audio_file)
+                    duration = get_audio_duration(audio_file)
+
+                song_data = form.cleaned_data
+                song_data['file_url'] = file_url
+                song_data['image_url'] = image_url
+                song_data['duration'] = duration
+
+                song_repo.create_song(song_data)
+                messages.success(request, 'Thêm bài hát thành công!')
+                return redirect('song_index')
+            except Exception as e:
+                messages.error(request, f'Lỗi: {str(e)}')
         else:
-            messages.error(request, f'Đã xảy ra lỗi khi gửi biểu mẫu! {form.errors}')  
+            messages.error(request, f'Đã xảy ra lỗi khi gửi biểu mẫu! {form.errors}') 
     else:
         form = SongCreateForm()
 
@@ -63,6 +76,8 @@ def delete_song(request, id):
     song = song_repo.get_song_id(id)
     if request.method == HTTP_METHOD_POST:
         try:
+            url_image = song.image_url
+            delete_song_image(url_image)
             mp3_url = song.file_url
             delete_song_file(mp3_url)
             song_repo.delete_song(id)
@@ -85,9 +100,20 @@ def edit_song(request, song_id):
         return redirect('album_index')
     if request.method == HTTP_METHOD_POST:
         form = SongEditForm(request.POST, instance=song)
+        image_file = request.FILES.get('image')
+
         if form.is_valid():
             song_data = form.cleaned_data
             audio_file = request.FILES.get('file')
+            song = form.save(commit=False)
+
+            if image_file:
+                delete_song_image(song_repo.get_song_id(song_id).image_url)
+                song.image_url = handle_song_image_upload(image_file)
+            else:
+                song.image_url = song_repo.get_song_id(song_id).image_url  
+            song.save()
+
             if audio_file:
                 delete_song_file(song_repo.get_song_id(song_id).file_url)
                 file_url = handle_song_file_upload(audio_file)
@@ -111,4 +137,8 @@ def edit_song(request, song_id):
 def song_file(request,id):
     song = song_repo.get_song_id(id)
     file_url = song.file_url
-    return render(request, 'song/mp3.html', {'file_url': file_url})
+    image_url = song.image_url
+    return render(request, 'song/mp3.html', {
+        'file_url': file_url,
+        'image_url': image_url
+    })
