@@ -24,9 +24,9 @@ album_repo = AlbumService()
 artist_repo = ArtistService()
 ''' search  bài hát: genre,  album, ca sĩ'''
 def search_songs(request):
-    if request.method == HTTP_METHOD_POST:
+    if request.method == HTTP_METHOD_GET:
         try:
-            keyword = request.query_params.get('search', '').strip().lower()
+            keyword = request.GET.get('search', '').strip().lower()
 
             songs = []
             albums = []
