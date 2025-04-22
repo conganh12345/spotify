@@ -62,7 +62,26 @@ Thêm mới bài hát
                                         {% endfor %}
                                     </div>
                                 </div>
-                            </div>                            
+                            </div> 
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="image_url">Ảnh đại diện <strong class="text-danger">*</strong></label>
+                                        <input name="image"
+                                               type="file"
+                                               id="image_url"
+                                               accept="image/*"
+                                               required
+                                               class="form-control {% if form.image_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.image_url.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        <img id="selected-avatar" style="display: none; max-width: 50%; height: auto;" alt="Selected Image">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">

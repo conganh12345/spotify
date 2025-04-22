@@ -90,6 +90,7 @@ Quản lý bài hát
                     <th>Thời lượng</th>   
                     <th>MP4</th> 
                     <th>Ngày tạo</th>
+                    <th style="width: 30%">Ảnh</th>
                     <th class="no-content" style="width: 5%">Thao tác</th>
                   </tr>
                   
@@ -109,10 +110,10 @@ Quản lý bài hát
                       <span class="text-primary">{{ song.artist.name }}</span>
                   </p>
                   <p class="text-start me-1">
-                      Album:
+                      Song:
                       <span class="text-primary">
-                        {% if song.album %}
-                        {{ song.album.title }}
+                        {% if song.song %}
+                        {{ song.song.title }}
                         {% else %}
                           Không
                         {% endif %}
@@ -149,6 +150,13 @@ Quản lý bài hát
                 -->
 
                 <td>{{ song.created_at }}</td>
+                <td>
+                  {% if album.image_url %}
+                  <img src="/media/{{ album.image_url }}" alt="Ảnh đại diện" style="max-width: 150px; height: auto;">
+                  {% else %}
+                  <span>Không có ảnh</span>
+                  {% endif %}
+                </td>
                 <td
                   class="table-controls justify-content-center align-items-center pt-2"
                 >

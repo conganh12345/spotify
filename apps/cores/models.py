@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Album(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, null=True, blank=True)
-    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True)
+    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True, related_name='albums')
     release_date = models.DateField(default='2025-01-01')
     image_url = models.TextField(null=True, blank=True)
     class Meta:
@@ -22,12 +22,13 @@ class Genre(models.Model):
 class Song(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, null=True, blank=True)
-    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True)
-    album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True)
+    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True, related_name='songs')
+    album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, related_name='songs')
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
     duration = models.IntegerField(null=True, blank=True)
     file_url = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    image_url = models.TextField(null=True, blank=True)
     class Meta:
         db_table ='songs'
 
