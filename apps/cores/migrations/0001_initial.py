@@ -69,6 +69,7 @@ class Migration(migrations.Migration):
                 ('duration', models.IntegerField(blank=True, null=True)),
                 ('file_url', models.ImageField(upload_to='images/', blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('image_url', models.ImageField(upload_to='images/', blank=True, null=True)),
                 ('album', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cores.album')),
                 ('artist', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cores.artist')),
                 ('genre', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cores.genre')),
