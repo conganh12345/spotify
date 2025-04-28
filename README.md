@@ -41,3 +41,6 @@
   - pip install mutagen (thư viện để tính thời gian file MP3)
   - pip install django-cors-headers (Để Django chấp nhận cookie từ ReactJS, bạn   cần cấu hình CORS và bật CORS_ALLOW_CREDENTIALS.)
 
+8. Cài thư viện này để lấy token đăng nhập JWT
+  - pip install djangorestframework-simplejwt
+

@@ -11,6 +11,10 @@ from apps.users.services.user_service import UserService
 from apps.groups.services.group_service import GroupService
 from django.core.exceptions import ValidationError
 from apps.common.constants import HTTP_METHOD_POST
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
 
 user_service = UserService()
 group_service = GroupService()
@@ -82,3 +86,20 @@ def delete_user(request, id):
             return JsonResponse({'error': str(e)}, status=404)
 
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Thêm dữ liệu custom vào token
+        token['username'] = user.username
+        token['email'] = user.email
+        token['is_staff'] = user.is_staff
+        token['is_active'] = user.is_active
+        token['id'] = user.id
+
+        return token
+    
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
