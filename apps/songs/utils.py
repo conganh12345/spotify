@@ -52,7 +52,7 @@ def delete_song_image(image_url):
 def handle_song_image_upload(file):
     ext = file.name.split('.')[-1]
     filename = f"{uuid.uuid4()}.{ext}"
-    folder = 'album_images'
+    folder = 'song_images'
     path = os.path.join(settings.MEDIA_ROOT, folder, filename)
 
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -60,3 +60,5 @@ def handle_song_image_upload(file):
     with open(path, 'wb+') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
+
+    return f"{folder}/{filename}"

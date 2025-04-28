@@ -151,12 +151,13 @@ Quản lý bài hát
 
                 <td>{{ song.created_at }}</td>
                 <td>
-                  {% if album.image_url %}
-                  <img src="/media/{{ album.image_url }}" alt="Ảnh đại diện" style="max-width: 150px; height: auto;">
+                  {% if song.image_url %}
+                  <img src="/media/{{ song.image_url }}" alt="Ảnh đại diện" style="max-width: 150px; height: auto;">
                   {% else %}
                   <span>Không có ảnh</span>
                   {% endif %}
                 </td>
+
                 <td
                   class="table-controls justify-content-center align-items-center pt-2"
                 >

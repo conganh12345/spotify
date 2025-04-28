@@ -54,7 +54,7 @@ def create_song(request):
                 song_data['file_url'] = file_url
                 song_data['image_url'] = image_url
                 song_data['duration'] = duration
-
+                print("bai hat0",song_data)
                 song_repo.create_song(song_data)
                 messages.success(request, 'Thêm bài hát thành công!')
                 return redirect('song_index')
