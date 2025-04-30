@@ -14,6 +14,8 @@ from apps.artists.services.artist_service import ArtistService
 from django.http import JsonResponse
 from apps.cores.models import Artist
 from apps.cores.models import Song
+from apps.cores.models import Album
+from apps.songs.utils import format_duration
 
 song_repo = SongService()
 album_repo = AlbumService()
@@ -24,31 +26,30 @@ def get_artists_id(request, artist_id):
     if request.method == HTTP_METHOD_GET:
         try:
             artist_detail = artist_repo.get_artist_id(artist_id)
-            # songs = artist_detail.songs.all()
-            # albums = artist_detail.albums.all()
-            
-            # song_list = []
-            # for song in songs:
-            #     song_list.append({
-            #         'id': song.id,
-            #         'title': song.title,
-            #         'artist': song.artist.name if song.artist else None,
-            #         'genre': song.genre.name if song.genre else None,
-            #         'duration': song.duration,
-            #         'file_url': song.file_url
-            #     })
+            songs = artist_detail.songs.all()
 
-            # album_list = []
-            # for album in albums:
-            #     album_list.append({
-            #         'id': album.id,
-            #         'title': album.title,
-            #         'artist': album.artist.name if song.artist else None,
-            #         'genre': album.genre.name if song.genre else None,
-            #         'duration': album.duration,
-            #         'file_url': album.file_url
-            #     })
-            
+            song_list = []
+            for song in songs:
+                song_list.append({
+                    'id': song.id,
+                    'title': song.title,
+                    'artist': song.artist.name if song.artist else None,
+                    'genre': song.genre.name if song.genre else None,
+                    'duration': format_duration(song.duration),
+                    'file_url': song.file_url,
+                })
+
+            albums = artist_detail.albums.all()
+            album_list = []
+            for album in albums:
+                album_list.append({
+                    'id': album.id,
+                    'title': album.title,
+                    'artist': album.artist.name if album.artist else None,
+                    'release_date': album.release_date,
+                    'image_url': album.image_url
+                })
+
             artist_data = {
                 'id': artist_detail.id,
                 'name': artist_detail.name,
@@ -57,8 +58,8 @@ def get_artists_id(request, artist_id):
                 'cover_url': artist_detail.cover_url.url if artist_detail.cover_url else None,
                 'created_at': artist_detail.created_at,
                 'genres_note': artist_detail.genres_note,
-                # 'songs': song_list, 
-                # 'albums': album_list
+                'songs': song_list, 
+                'albums': album_list
             }
 
             return JsonResponse({'success': True, 'result': artist_data})
@@ -72,8 +73,8 @@ def get_all_artists(request):
         all_artists_data = []
 
         for artist in artists:
-            # songs = Song.objects.filter(album=album)
-
+            
+            # songs = Song.objects.filter(artist=artist)
             # song_list = []
             # for song in songs:
             #     song_list.append({
@@ -81,8 +82,19 @@ def get_all_artists(request):
             #         'title': song.title,
             #         'artist': song.artist.name if song.artist else None,
             #         'genre': song.genre.name if song.genre else None,
-            #         'duration': song.duration,
+            #         'duration': format_duration(songs.duration),
             #         'file_url': song.file_url,
+            #     })
+
+            # albums = Album.objects.filter(artist=artist)
+            # album_list = []
+            # for album in albums:
+            #     album_list.append({
+            #         'id': album.id,
+            #         'title': album.title,
+            #         'artist': album.artist.name if album.artist else None,
+            #         'release_date': album.release_date,
+            #         'image_url': album.image_url
             #     })
 
             artist_data = {
@@ -93,7 +105,7 @@ def get_all_artists(request):
                 'cover_url': artist.cover_url.url if artist.cover_url else None,
                 'created_at': artist.created_at,
                 'genres_note': artist.genres_note,
-                # 'songs': song_list, 
+                # 'songs': song_list,
                 # 'albums': album_list
             }
 

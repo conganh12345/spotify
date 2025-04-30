@@ -14,6 +14,7 @@ from apps.artists.services.artist_service import ArtistService
 from django.http import JsonResponse
 from apps.cores.models import Album
 from apps.cores.models import Song
+from apps.songs.utils import format_duration
 
 song_repo = SongService()
 album_repo = AlbumService()
@@ -33,7 +34,7 @@ def get_albums_id(request, album_id):
                     'title': song.title,
                     'artist': song.artist.name if song.artist else None,
                     'genre': song.genre.name if song.genre else None,
-                    'duration': song.duration,
+                    'duration': format_duration(song.duration),
                     'file_url': song.file_url,
                 })
 
