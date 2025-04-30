@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/',include('apps.playlists_songs.api_urls')),
     path('api/',include('apps.chats.api_urls')),
     path('api/',include('apps.chat_messages.api_urls')),
+    path('api/', include('apps.users.api_urls')), 
     path('', include('apps.users.api_urls')),
 
 
