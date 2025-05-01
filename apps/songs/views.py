@@ -9,7 +9,7 @@ from apps.songs.forms.song_edit_form import SongEditForm
 from apps.albums.services.album_service import AlbumService
 from apps.genres.services.genre_service import GenreService
 from apps.common.constants import HTTP_METHOD_POST
-from apps.songs.utils import delete_song_image, handle_song_file_upload, delete_song_file, get_audio_duration, handle_song_image_upload
+from apps.songs.utils import delete_song_image, handle_song_file_upload, delete_song_file, get_audio_duration, handle_song_image_upload, handle_video_file_upload, delete_video_file
 from apps.artists.services.artist_service import ArtistService 
 from apps.songs.services.song_service import SongService 
 from datetime import date
@@ -50,7 +50,12 @@ def create_song(request):
                     file_url = handle_song_file_upload(audio_file)
                     duration = get_audio_duration(audio_file)
 
+                video_file = request.FILES.get('video_file')
+                if video_file:
+                    video_url = handle_video_file_upload(video_file)
+                    
                 song_data = form.cleaned_data
+                song_data['video_url'] = video_url
                 song_data['file_url'] = file_url
                 song_data['image_url'] = image_url
                 song_data['duration'] = duration
@@ -79,7 +84,9 @@ def delete_song(request, id):
             url_image = song.image_url
             delete_song_image(url_image)
             mp3_url = song.file_url
+            video_url = song.video_url
             delete_song_file(mp3_url)
+            delete_video_file(video_url)
             song_repo.delete_song(id)
             return JsonResponse({'success': True}, status=200)
         except ValidationError as e:
@@ -112,7 +119,6 @@ def edit_song(request, song_id):
                 song.image_url = handle_song_image_upload(image_file)
             else:
                 song.image_url = song_repo.get_song_id(song_id).image_url  
-            song.save()
 
             if audio_file:
                 delete_song_file(song_repo.get_song_id(song_id).file_url)
@@ -123,6 +129,15 @@ def edit_song(request, song_id):
             else:
                 song_data['file_url']=song.file_url
                 song_data['duration']=song.duration
+ 
+            video_file = request.FILES.get('video_file')
+            if video_file:
+                video_url = handle_video_file_upload(video_file)
+                delete_video_file(song_repo.get_song_id(song_id).video_url)
+                song_data['video_url'] = video_url
+            else:
+                song_data['video_url'] = song.video_url
+
             song_repo.update_song(song,song_data)
             messages.success(request, 'Update thành công!')
             return redirect('song_index')
@@ -142,3 +157,10 @@ def song_file(request,id):
         'file_url': file_url,
         'image_url': image_url
     })
+
+@login_required
+def song_video(request,id):
+    song = song_repo.get_song_id(id)
+    video_url = song.video_url
+    return render(request, 'song/video.html', {'video_url': video_url})
+

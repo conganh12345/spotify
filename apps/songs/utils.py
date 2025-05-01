@@ -62,3 +62,24 @@ def handle_song_image_upload(file):
             destination.write(chunk)
 
     return f"{folder}/{filename}"
+
+def handle_video_file_upload(file):
+    ext = file.name.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    folder = 'video'
+    path = os.path.join(settings.MEDIA_ROOT, folder, filename)
+
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
+    with open(path, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+    return f"{folder}/{filename}"
+
+def delete_video_file(video_url):
+    if video_url:
+        file_path = os.path.join(settings.MEDIA_ROOT, video_url)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+

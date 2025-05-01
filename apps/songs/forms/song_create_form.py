@@ -4,7 +4,7 @@ from apps.cores.models import Song
 class SongCreateForm(forms.ModelForm):
     class Meta:
         model = Song
-        fields = ['title' ,'artist','file_url','album','genre','duration']
+        fields = ['title' ,'artist','file_url','album','genre','duration', 'video_url', 'duration_video']
     def clean_title(self):
         title = self.cleaned_data['title']
         if len(title) < 1:

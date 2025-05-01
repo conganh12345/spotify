@@ -67,6 +67,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('title', models.CharField(blank=True, max_length=100, null=True)),
                 ('duration', models.IntegerField(blank=True, null=True)),
+                ('duration_video', models.IntegerField(blank=True, null=True)),
+                ('video_url', models.FileField(upload_to='videos/', blank=True, null=True)),
                 ('file_url', models.ImageField(upload_to='images/', blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('image_url', models.ImageField(upload_to='images/', blank=True, null=True)),
