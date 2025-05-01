@@ -27,6 +27,8 @@ class Song(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
     duration = models.IntegerField(null=True, blank=True)
     file_url = models.TextField(null=True, blank=True)
+    duration_video = models.IntegerField(null=True, blank=True)
+    video_url = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     image_url = models.TextField(null=True, blank=True)
     class Meta:
