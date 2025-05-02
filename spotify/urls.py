@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/',include('apps.playlists.api_urls')),
     path('api/',include('apps.playlists_songs.api_urls')),
     path('api/',include('apps.chats.api_urls')),
+    path('chat/',include('apps.chats.urls')),
     path('api/',include('apps.chat_messages.api_urls')),
     # path('api/',include('apps.notifications.api_urls')),
     # path('api/',include('apps.groups.api_urls')),

@@ -1,0 +1,217 @@
+{% extends 'layouts/base-layout.html' %} 
+{% load static %} 
+
+{% block title %}
+Quản lý Chat
+{% endblock %} 
+
+{% block custom_css %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/datatables.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/light/table/datatable/dt-global_style.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/dark/table/datatable/dt-global_style.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/light/table/datatable/custom_dt_custom.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/dark/table/datatable/custom_dt_custom.css' %}"
+/>
+{% endblock %} 
+
+{% block content %}
+<div>
+  <!-- BREADCRUMB -->
+  <div class="page-meta">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Chat</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Quản lý Chat
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <!-- /BREADCRUMB -->
+
+  <!-- DATATABLE -->
+  <div class="row layout-top-spacing">
+    <div class="col-xl-12 col-lg-12 col-sm-12">
+      <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+          <div class="row">
+            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+              <h4>Quản lý Chat</h4>
+            </div>
+          </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <!--
+          <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
+            <a href="{% url 'artist_create' %}" class="btn btn-primary"
+              >Thêm mới</a
+            >
+          </div>
+          -->
+          <table
+            id="artist-table"
+            class="table style-3 dt-table-hover"
+            style="width: 100%"
+          >
+            <thead>
+              <tr>
+                <th style="width: 5%">ID</th>
+                <th style="width: 20%">User 1</th>
+                <th style="width: 25%">User 2</th>
+                <th style="width: 45%">Thời gian tạo</th>
+                <th class="no-content" style="width: 5%">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for chat in chats %}
+              <tr>
+                <td>{{ chat.id }}</td>
+                <td>{{ chat.user1.username  }}</td>
+                <td>{{ chat.user2.username  }}</td>
+                <td>{{ chat.created_at }}</td>
+                <td
+                  class="table-controls justify-content-center align-items-center pt-2"
+                >
+                <li>
+                   
+                    <a
+                      href="{% url 'detail_chat' chat.id %}"
+                      class="bs-tooltip view-detail"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                    >
+                    
+
+
+
+
+
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    </a>
+                  </li>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /DATATABLE -->
+</div>
+{% endblock %} 
+
+{% block custom_scripts %}
+<script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
+<script src="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js' %}"></script>
+<script src="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js' %}"></script>
+<script>
+  $("#artist-table").DataTable({
+    dom:
+      "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+      "<'table-responsive'tr>" +
+      "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+    oLanguage: {
+      oPaginate: {
+        sPrevious:
+          '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+        sNext:
+          '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>',
+      },
+      sEmptyTable: "Chưa có dữ liệu",
+      sInfo: "Đang hiển thị trang _PAGE_ của _PAGES_",
+      sSearch:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+      sSearchPlaceholder: "Tìm kiếm...",
+      sZeroRecords: "Không có bản ghi nào trùng khớp",
+      sLengthMenu: "Kết quả :  _MENU_",
+    },
+    stripeClasses: [],
+    lengthMenu: [7, 10, 20, 50],
+    pageLength: 10,
+    ordering: false,
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    let artistIdToDelete;
+
+    $(".delete").on("click", function (e) {
+      e.preventDefault();
+      artistIdToDelete = $(this).data("artist-id");
+      $("#deleteModal").modal("show");
+    });
+
+    $("#confirmDelete").on("click", function () {
+      $.ajax({
+        url: "{% url 'artist_delete' 0 %}".replace("0", artistIdToDelete),
+        type: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+        success: function (response) {
+          Snackbar.show({
+            text: "Xóa nghệ sĩ thành công",
+            textColor: "#ddf5f0",
+            backgroundColor: "#00ab55",
+            actionText: "Bỏ qua",
+            actionTextColor: "#3b3f5c",
+          });
+
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        },
+        error: function () {
+          Snackbar.show({
+            text: "Xóa nghệ sĩ thất bại",
+            textColor: "#fbeced",
+            backgroundColor: "#e7515a",
+            actionText: "Bỏ qua",
+            actionTextColor: "#3b3f5c",
+          });
+        },
+      });
+      $("#deleteModal").modal("hide");
+    });
+  });
+</script>
+{% endblock %}
+ 

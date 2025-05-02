@@ -11,5 +11,8 @@ class ChatService:
         self.chat_repo.add(user1_id=user1_id,user2_id=user2_id)
     def get_all_chats_by_userid(self, user_id):
         return self.chat_repo.get_all_chats_by_userid(user_id)
-
+    def get_all_chats(self):
+         return self.chat_repo.get_all_chats()
+    def get_chat_by_id(self,id):
+        return self.chat_repo.get_chat_by_id(id)
     

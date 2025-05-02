@@ -1,0 +1,442 @@
+{% extends 'layouts/base-layout.html' %} {% load static %} {% block title %}
+Quản lý Chat {% endblock %} {% block custom_css %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/datatables.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/light/table/datatable/dt-global_style.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/dark/table/datatable/dt-global_style.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/light/table/datatable/custom_dt_custom.css' %}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/plugins/dark/table/datatable/custom_dt_custom.css' %}"
+/>
+
+<style>
+  /* Tổng thể hộp chat */
+  #chat-box {
+    background-color: #ffffff;
+    border: 2px solid #ece3e3;
+    border-radius: 8px;
+    height: 500px;
+    overflow-y: auto;
+    padding: 10px;
+    /* scroll-behavior: smooth;*/
+
+    /* scroll bar đẹp cho trình duyệt hỗ trợ */
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 transparent;
+    border-top: 1px solid #eee;
+  }
+
+  #messages {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .message {
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .message.left {
+    align-self: flex-start;
+    text-align: left;
+  }
+
+  .message.right {
+    align-self: flex-end;
+    text-align: right;
+  }
+
+  .sender-name {
+    font-size: 0.9rem;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .message-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .message.left .message-content {
+    flex-direction: row;
+  }
+
+  .message.right .message-content {
+    flex-direction: row-reverse;
+  }
+
+  .bubble {
+    background-color: #444;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    word-wrap: break-word;
+  }
+
+  .message.right .bubble {
+    background-color: #007bff;
+  }
+
+  .avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #888;
+  }
+
+  /* Tiêu đề */
+  .chat-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(7, 0, 0);
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid #555;
+  }
+  #chat-container {
+    position: relative;
+  }
+  .spinner {
+    display: none;
+    margin: auto;
+    width: 24px;
+    height: 24px;
+    border: 4px solid #ccc;
+    border-top-color: #4a90e2;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .message .msg-time {
+    font-size: 0.8em;
+    color: rgb(255, 255, 255);
+    margin: 0 5px;
+  }
+
+  .message.left .msg-time {
+    float: right;
+  }
+
+  .message.right .msg-time {
+    float: left;
+  }
+</style>
+
+{% endblock %} {% block content %}
+<div>
+  <!-- BREADCRUMB -->
+  <div class="page-meta">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Chat</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Quản lý Chat</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- /BREADCRUMB -->
+
+  <!-- DATATABLE -->
+  <div id="chat-container" class="chat-container">
+    <div class="chat-title">Đoạn chat ID #<span id="chat-id-title"></span></div>
+    <button id="deleteChatBtn" class="btn btn-danger">🗑️ Xóa Chat</button>
+    <div id="chat-box" class="chat-box">
+      <!--               SPINER         -->
+      <div id="loading-spinner" class="spinner"></div>
+      <div id="messages"></div>
+    </div>
+
+    <div id="message-input-container" class="message-input-container">
+      <input type="text" id="message-input" placeholder="Nhập tin nhắn..." />
+      <button id="send-button">Gửi</button>
+    </div>
+
+    <!-- mũi tên xuống dưới -->
+    <div
+      id="scroll-down-btn"
+      style="
+        display: none;
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        font-size: 24px;
+        background: white;
+        border-radius: 50%;
+        padding: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      "
+    >
+      ⬇️
+    </div>
+  </div>
+
+  <!-- /DATATABLE -->
+</div>
+{% endblock %} {% block custom_scripts %}
+<script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
+<script src="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js' %}"></script>
+<script src="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js' %}"></script>
+
+{{ chat|json_script:"chat_data" }}
+{{chat_messages|json_script:"chat_messages_data" }}
+
+<script>
+  let message_text_input = document.getElementById("message-input");
+  const chat = JSON.parse(document.getElementById("chat_data").textContent);
+  document.getElementById("chat-id-title").textContent = chat.chat_id;
+  const chat_messages = JSON.parse(
+    document.getElementById("chat_messages_data").textContent
+  );
+
+  const messageBox = document.getElementById("messages");
+  const chatBox = document.getElementById("chat-box");
+  const scrollDownBtn = document.getElementById("scroll-down-btn");
+  const loadingSpinner = document.getElementById("loading-spinner");
+
+  /*
+  console.log("day la chat_messages", chat_messages);
+  console.log("day la chat", chat);
+  */
+  // biến dùng để check scroll nó đang ở dưới cùng hay không
+  let isScrollBottom = false;
+  // biến xài để check spinner
+  let isLoading = false;
+  // biến xài để check đã load hết tin nhắn chưa
+  let isEnd = false;
+  // hàm set vị trí scroll ở dưới cùng
+  function scrollToBottom() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+  // mới vô trang thì để dưới cùng luôn
+  window.addEventListener("load", () => {
+    scrollToBottom();
+  });
+  // set scroll chaxbox , spinner( )
+  chatBox.addEventListener("scroll", () => {
+    if (chatBox.scrollTop + chatBox.clientHeight >= chatBox.scrollHeight - 10) {
+      isScrollBottom = true;
+    } else {
+      isScrollBottom = false;
+    }
+    scrollDownBtn.style.display = isScrollBottom ? "none" : "block";
+
+    if (chatBox.scrollTop === 0 && !isEnd && !isLoading) {
+      isLoading = true;
+    }
+
+    loadingSpinner.style.display = isLoading ? "block" : "none";
+    // load data
+    if (isLoading) {
+      loadOldMessage();
+    }
+  });
+
+  let chat_id = chat.chat_id;
+
+  // hàm gọi API xuống django và xử lí scroll, listMessage các kiểu
+  async function loadOldMessage() {
+    const previousScrollHeight = chatBox.scrollHeight;
+
+    let last_id = listMessage[0].id;
+    const url = `/chat/detail/${chat_id}?last_id=${last_id}`;
+
+    try {
+      const res = await fetch(url, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+
+      let data = await res.json();
+      if (data.length < 10) {
+        isEnd = true;
+      }
+      data = data.reverse();
+      listMessage.unshift(...data);
+      const newScrollHeight = chatBox.scrollHeight;
+      chatBox.scrollTop = newScrollHeight - previousScrollHeight;
+    } catch (err) {
+      console.error("Lỗi load tin cũ:", err);
+    }
+
+    renderMessenger();
+    const newScrollHeight = chatBox.scrollHeight;
+    chatBox.scrollTop = newScrollHeight - previousScrollHeight;
+    isLoading = false;
+  }
+  scrollDownBtn.addEventListener("click", () => {
+    chatBox.scrollTo({
+      top: chatBox.scrollHeight,
+      behavior: "smooth",
+    });
+  });
+
+  // list xài để lưu tin nhắn
+  let listMessage = [];
+  listMessage = listMessage.concat(chat_messages);
+  listMessage = listMessage.reverse();
+
+  // hàm load tin nhắn trong list message
+  function renderMessenger() {
+    messageBox.innerHTML = "";
+
+    for (const msg of listMessage) {
+      appendMessage(chat, msg);
+    }
+  }
+  renderMessenger();
+
+  const socket = new WebSocket(
+    `ws://${window.location.host}/ws/chat/${chat_id}`
+  );
+
+  document.getElementById("send-button").addEventListener("click", function () {
+    let message_text = message_text_input.value;
+    let sender_id = 1;
+
+    const messageData = {
+      message_text: message_text,
+      sender_id: sender_id,
+      chat_id: chat_id,
+    };
+
+    // Kiểm tra WebSocket đã sẵn sàng chưa
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(messageData));
+      message_text_input.value = "";
+    } else {
+      console.error("WebSocket chưa sẵn sàng để gửi tin nhắn.");
+    }
+  });
+
+  // render tin nhắn
+  function appendMessage(chat_info, data) {
+    const isUser1 = data.sender_id === chat_info.user1_id;
+    const sender_name = isUser1
+      ? chat_info.user1_username
+      : chat_info.user2_username;
+    const avatarSrc = isUser1
+      ? "/static/images/male.png"
+      : "/static/images/female.png";
+
+    const div = document.createElement("div");
+    div.className = "message " + (isUser1 ? "left" : "right");
+
+    const timeHTML = `<span class="msg-time">${data.time}</span>`;
+
+    div.innerHTML = `
+    <div class="sender-name">${sender_name}</div>
+    <div class="message-content">
+        <img src="${avatarSrc}" class="avatar">
+        <div class="bubble" style="cursor: pointer;">
+          ${
+            isUser1
+              ? `${data.message_text} ${timeHTML}`
+              : `${timeHTML} ${data.message_text}`
+          }
+          <div class="msg-date" style="display:none; font-size: 0.8em; color: white;">${
+            data.date
+          }</div>
+        </div>
+    </div>
+  `;
+
+    const bubble = div.querySelector(".bubble");
+    const msgDate = bubble.querySelector(".msg-date");
+    bubble.addEventListener("click", () => {
+      msgDate.style.display =
+        msgDate.style.display === "none" ? "block" : "none";
+    });
+
+    messageBox.appendChild(div);
+    if (isScrollBottom) {
+      scrollToBottom();
+    }
+  }
+  //XÓA TOÀN BỘ CHAT
+  const deleteChatBtn = document.getElementById("deleteChatBtn");
+  deleteChatBtn.addEventListener("click", () => {
+    if (!confirm("Bạn có chắc muốn xóa toàn bộ cuộc trò chuyện không?")) return;
+
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          command: "delete_chat",
+          chat_id: chat_id,
+        })
+      );
+    } else {
+      alert("Không thể kết nối đến máy chủ..");
+    }
+  });
+
+  // Nhận data từ websocket
+  socket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+    console.log(data);
+    let message_type = data.message_type;
+    if (message_type === "create_chat_response") {
+      let message_data = {
+        create_at: data.create_at,
+        message_text: data.message_text,
+        id: data.id,
+        is_read: data.is_read,
+        sender_id: data.sender_id,
+        time: data.time,
+        date: data.date,
+      };
+      listMessage.push(message_data);
+      renderMessenger();
+    }else if(message_type==="delete_chat_response"){
+      if(data.success){
+        messageBox.innerHTML = '';
+        listMessage = [];
+        alert("Đã xóa toàn bộ tin nhắn trong cuộc trò chuyện.");
+      }
+    }
+  };
+  
+</script>
+
+<script></script>
+{% endblock %}
