@@ -27,12 +27,14 @@ SECRET_KEY = 'django-insecure-8$d%s_r#^(q4b&a(hynp-k-oasq-o!7mayw*c#1arc!jy^kfon
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+        'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,8 +56,21 @@ INSTALLED_APPS = [
     'apps.chats',
     'apps.chat_messages',
     'rest_framework',
+    'channels',
     'corsheaders'
 ]
+
+ASGI_APPLICATION = 'spotify.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # FE chạy trên port này
 ]
@@ -68,6 +83,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'spotify.urls'

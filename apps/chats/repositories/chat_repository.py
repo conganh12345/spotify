@@ -19,6 +19,11 @@ class ChatRepository(BaseRepository, ChatRepositoryInterface):
       def get_all_chats_by_userid(self, user_id):
          return Chat.objects.filter(Q(user1_id=user_id) | Q(user2_id=user_id))
       
+      def get_all_chats(self):
+         return Chat.objects.select_related('user1', 'user2').all()
+      def get_chat_by_id(self, id):
+         return Chat.objects.select_related('user1', 'user2').get(id=id)
+
       
          
              

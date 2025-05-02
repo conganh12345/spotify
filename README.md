@@ -37,9 +37,23 @@
  - python manage.py runserver
 
 7. Cài thư viện này để tạo API
+  - pip install moviepy
   - pip install djangorestframework
   - pip install mutagen (thư viện để tính thời gian file MP3)
   - pip install django-cors-headers (Để Django chấp nhận cookie từ ReactJS, bạn   cần cấu hình CORS và bật CORS_ALLOW_CREDENTIALS.)
+  - pip install channels (websocket)
+  - pip install channels_redis ( WebSocket dùng Redis để quản lý các channel)
+  - pip install daphne
+  - pip install whitenoise
+  - python manage.py collectstatic (chạy 1 lần cho về sau, hoặc mỗi lần có thay đổi trong folder static thì chạy lại)
+  - vô microsoft store tải Ubuntu 
+  - bật wls ở cmd
+  - sudo apt update (lệnh này chỉ cần 1 lần)
+  - sudo apt install redis-server ( chạy redis)
+   sau khi làm phần chat thì mỗi lần chạy project phải xài lệnh này
+  daphne -p 8000 spotify.asgi:application
+  
+
 
 8. Cài thư viện này để lấy token đăng nhập JWT
   - pip install djangorestframework-simplejwt
