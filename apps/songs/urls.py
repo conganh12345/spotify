@@ -9,5 +9,5 @@ urlpatterns = [
     path('delete/<int:id>/', views.delete_song, name='song_delete'),
     path('song_file/<int:id>/', views.song_file, name='song_file'),
     path('song_video/<int:id>/', views.song_video, name='song_video'),
-
+    path('stream/<str:filename>/', views.stream_song_file, name='stream_song_file'),
 ]

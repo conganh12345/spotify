@@ -31,7 +31,7 @@
   - python manage.py migrate
 
 5.Tạo tài khoản admin
-  - python manage.py createsuperuser\
+  - python manage.py createsuperuser
 
 6. Chạy server
  - python manage.py runserver

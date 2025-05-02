@@ -54,9 +54,10 @@ INSTALLED_APPS = [
     'apps.chats',
     'apps.chat_messages',
     'rest_framework',
+    'corsheaders'
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # FE chạy trên port này
+    "http://localhost:5173",  # FE chạy trên port này
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

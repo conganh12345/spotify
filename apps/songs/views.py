@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse,StreamingHttpResponse, HttpResponse, Http404
 from django.core.exceptions import ValidationError
 from apps.cores.models import Album
 from apps.songs.forms.song_create_form import SongCreateForm
@@ -15,7 +15,9 @@ from apps.songs.services.song_service import SongService
 from datetime import date
 from apps.artists.models import Artist
 from apps.cores.models import Genre
-
+from wsgiref.util import FileWrapper
+from django.conf import settings
+import os
 album_repo = AlbumService()
 artist_repo = ArtistService()
 genre_repo = GenreService()
@@ -164,3 +166,36 @@ def song_video(request,id):
     video_url = song.video_url
     return render(request, 'song/video.html', {'video_url': video_url})
 
+def stream_song_file(request, filename):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'song_files', filename)
+
+    if not os.path.exists(file_path):
+        raise Http404("File not found.")
+
+    file_size = os.path.getsize(file_path)
+    range_header = request.headers.get('Range', '')
+
+    if range_header:
+        try:
+            start, end = range_header.replace('bytes=', '').split('-')
+            start = int(start)
+            end = int(end) if end else file_size - 1
+        except ValueError:
+            return HttpResponse(status=400)
+
+        length = end - start + 1
+        with open(file_path, 'rb') as f:
+            f.seek(start)
+            data = f.read(length)
+
+        response = HttpResponse(data, status=206, content_type='video/mp4')
+        response['Content-Range'] = f'bytes {start}-{end}/{file_size}'
+        response['Accept-Ranges'] = 'bytes'
+        response['Content-Length'] = str(length)
+        return response
+
+    # No range header: serve full file
+    response = StreamingHttpResponse(FileWrapper(open(file_path, 'rb')), content_type='video/mp4')
+    response['Content-Length'] = str(file_size)
+    response['Accept-Ranges'] = 'bytes'
+    return response
