@@ -21,9 +21,12 @@ from rest_framework.response import Response
 from rest_framework import status
 chat_repo = ChatService()
 chat_message_repo = ChatMessageService()
+'''
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
+'''
+@csrf_exempt
 def create_message(request,chat_id):
     if request.method == HTTP_METHOD_POST:
         try:
