@@ -13,9 +13,16 @@ from apps.chats.services.chat_service import ChatService
 from apps.chat_messages.services.chat_message_service import ChatMessageService
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
+from rest_framework import status
 chat_repo = ChatService()
 chat_message_repo = ChatMessageService()
+@api_view(['GET', 'POST']) 
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def chat(request):
     if request.method == HTTP_METHOD_POST:
         try:

@@ -17,8 +17,16 @@ from django.http import JsonResponse
 from apps.playlists_songs.services.playlists_songs_service import PlaylistSongService
 from django.contrib.auth.decorators import login_required
 from apps.playlists.services.playlists_services import PlaylistService
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
+from rest_framework import status
 playlists_songs_repo = PlaylistSongService()
 playlist_repo = PlaylistService()
+@api_view(['GET', 'PUT','DELETE']) 
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_songs_in_playlist_id(request, playlist_id):
     if request.method == HTTP_METHOD_GET:
         try:
