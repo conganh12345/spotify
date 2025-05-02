@@ -110,10 +110,10 @@ Quản lý bài hát
                       <span class="text-primary">{{ song.artist.name }}</span>
                   </p>
                   <p class="text-start me-1">
-                      Song:
+                      Alnum:
                       <span class="text-primary">
-                        {% if song.song %}
-                        {{ song.song.title }}
+                        {% if song.album %}
+                        {{ song.album.title }}
                         {% else %}
                           Không
                         {% endif %}

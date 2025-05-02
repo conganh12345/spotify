@@ -13,9 +13,11 @@ from apps.artists.services.artist_service import ArtistService
 from datetime import date
 from apps.artists.models import Artist
 from apps.songs.services.song_service import SongService
+
 album_repo = AlbumService()
 artist_repo = ArtistService()
 song_repo = SongService()
+
 @login_required
 def index(request):
     albums = album_repo.get_all_albums()
@@ -26,7 +28,6 @@ def index(request):
 def create_album(request):
     today = date.today().isoformat()
     artists = artist_repo.get_all_artists()
-    artists_json = list(artists.values('id','name'))
     
     if request.method == HTTP_METHOD_POST:
         form = AlbumCreateForm(request.POST)
@@ -50,18 +51,13 @@ def create_album(request):
     else:
         form = AlbumCreateForm()
 
-    return render(request, 'album/create.html', {'form': form , 'artists':artists_json, 'today':today})
+    return render(request, 'album/create.html', {'form': form , 'artists':artists, 'today':today})
 
 @login_required
 def edit_album(request, album_id):
     album = album_repo.get_album_id(album_id)
     today = date.today().isoformat()
     artists = artist_repo.get_all_artists()
-    artists_json = list(artists.values('id', 'name'))
-
-    if not album:
-        messages.error(request, 'Album không tồn tại.')
-        return redirect('album_index')
 
     if request.method == HTTP_METHOD_POST:
         form = AlbumEditForm(request.POST, instance=album)
@@ -90,7 +86,7 @@ def edit_album(request, album_id):
         'form': form,
         'album': album,
         'today': today,
-        'artists': artists_json
+        'artists': artists
     })
 
 @login_required

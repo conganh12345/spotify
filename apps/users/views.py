@@ -46,6 +46,7 @@ def create_user(request):
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     groups = group_service.get_all_groups()
+    
     if request.method == HTTP_METHOD_POST:
         form = UserEditForm(request.POST, instance=user)
         password = request.POST.get('password')  

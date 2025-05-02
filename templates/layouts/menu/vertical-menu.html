@@ -171,7 +171,7 @@
 				</div>
 			</li>
 
-			<li class="menu {% if request.resolver_match.url_name == 'chat_index' %}active{% elif request.resolver_match.url_name == 'detail_chat' %}active{% elif request.resolver_match.url_name == 'song_edit' %}active{% endif %}">
+			<li class="menu {% if request.resolver_match.url_name == 'chat_index' %}active{% elif request.resolver_match.url_name == 'detail_chat' %}active{% endif %}">
 				<a href="{% url 'chat_index' %}" class="dropdown-toggle">
 					<div>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

@@ -31,11 +31,9 @@ def index(request):
 @login_required
 def create_song(request):
     artists = artist_repo.get_all_artists()
-    artists_json = list(artists.values('id','name'))
     albums = album_repo.get_all_albums()
-    albums_json = list(albums.values('id','title'))
     genres = genre_repo.get_all_genres()
-    genres_json = list(genres.values('id','name'))
+    
     if request.method == HTTP_METHOD_POST:
         form = SongCreateForm(request.POST)
         image_url = None
@@ -72,7 +70,12 @@ def create_song(request):
     else:
         form = SongCreateForm()
 
-    return render(request, 'song/create.html', {'form': form , 'artists':artists_json, 'albums':albums_json, 'genres':genres_json})
+    return render(request, 'song/create.html', {
+        'form': form , 
+        'artists':artists, 
+        'albums':albums, 
+        'genres':genres
+    })
 
 @login_required
 def edit_song(request, album_id):
@@ -98,12 +101,10 @@ def delete_song(request, id):
 @login_required
 def edit_song(request, song_id):
     artists = artist_repo.get_all_artists()
-    artists_json = list(artists.values('id','name'))
     albums = album_repo.get_all_albums()
-    albums_json = list(albums.values('id','title'))
     genres = genre_repo.get_all_genres()
-    genres_json = list(genres.values('id','name'))
     song = song_repo.get_song_id(song_id)
+    
     if not song:
         messages.error(request, 'Album không tồn tại.')
         return redirect('album_index')
@@ -148,7 +149,13 @@ def edit_song(request, song_id):
     else:
         form = SongEditForm(instance=song)
 
-    return render(request, 'song/edit.html', {'form': form , 'artists':artists_json, 'albums':albums_json, 'genres':genres_json , 'song':song})
+    return render(request, 'song/edit.html', {
+        'form': form , 
+        'artists':artists, 
+        'albums':albums, 
+        'genres':genres , 
+        'song':song
+    })
 
 @login_required
 def song_file(request,id):

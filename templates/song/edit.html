@@ -6,6 +6,9 @@ Chỉnh sửa bài hát
 {% endblock %}
 
 {% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/light/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/dark/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/tomSelect/tom-select.default.min.css' %}">
 <style>
     .ts-control{
            padding: 12px;
@@ -116,91 +119,60 @@ Chỉnh sửa bài hát
                             </div>
 
 
-                            <!-- ARTISTSARTISTS-->
-                            <div class="form-group mb-4">
-                                <label for="artist_search">Tên nghệ sĩ <strong class="text-danger">*</strong></label>
-                                <input type="text"
-                                       id="artist_search"
-                                       class="form-control"
-                                       placeholder="Nhập tên nghệ sĩ...">
-                                <div id="artist_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
-                            </div>
-
-                            <div class="form-group mb-4">
-                                <label for="selected_artist">Nghệ sĩ đã chọn</label>
-                                <input type="text"
-                                       id="selected_artist"
-                                       class="form-control"
-                                       readonly
-                                       style="color: black;"
-                                       value="{{song.artist.name}}">
-                                <input type="hidden" name="artist" id="artist_id" value="{{song.artist.id}}"> <!-- field thực gửi -->
-                            </div>
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
-                                        <label for="image_url">Ảnh đại diện <strong class="text-danger">*</strong></label>
-                                        <input name="image"
-                                               type="file"
-                                               id="image_url"
-                                               accept="image/*"
-                    
-                                               class="form-control {% if form.image_url.errors %}is-invalid{% endif %}">
-                                        {% for error in form.image_url.errors %}
-                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        <label for="artist">Nghệ sĩ <strong class="text-danger">*</strong></label>
+                                        <select name="artist" id="sArtist" class="form-control {% if form.artist.errors %}is-invalid{% endif %}">
+                                            {% for artist in artists %}
+                                            <option value="{{ artist.id }}" {% if artist.id == form.artist.value %}selected{% endif %}>
+                                                {{ artist.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        {% for error in form.artist.errors %}
+                                        <span class="text-danger">{{ error }}</span>
                                         {% endfor %}
-                                        <img src="/media/{{ song.image_url }}" id="selected-avatar" style="max-width: 50%; height: auto;" alt="Selected Image">
                                     </div>
                                 </div>
                             </div>
                             
                             <!--  ALBUM -->
-                            <div class="form-group mb-4">
-                                <label for="album_search">Tên Album <strong class="text-danger">*</strong></label>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" value="true" id="no_album_checkbox" name="no_album">
-                                    <label class="form-check-label" for="no_album_checkbox">
-                                      Không album
-                                    </label>
-                                  </div>
-                                <input type="text"
-                                       id="album_search"
-                                       class="form-control"
-                                       placeholder="Nhập tên album...">
-                                <div id="album_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
-                            </div>
-                            
-                            <div class="form-group mb-4">
-                                <label for="selected_album">Album đã chọn</label>
-                                <input type="text"
-                                       id="selected_album"
-                                       class="form-control"
-                                       readonly
-                                       style="color: black;"
-                                       value="{{song.album.title}}">
-                                <input type="hidden" name="album" id="album_id" value="{{song.album.id}}"> <!-- field thực gửi -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="album">Album <strong class="text-danger">*</strong></label>
+                                        <select name="album" id="sAlbum" class="form-control {% if form.album.errors %}is-invalid{% endif %}">
+                                            {% for album in albums %}
+                                            <option value="{{ album.id }}" {% if album.id == form.album.value %}selected{% endif %}>
+                                                {{ album.title }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        {% for error in form.album.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- GENRE -->
-                            <div class="form-group mb-4">
-                                <label for="genre_search">Thể loại <strong class="text-danger">*</strong></label>
-                                <input type="text"
-                                       id="genre_search"
-                                       class="form-control"
-                                       placeholder="Nhập tên thể loại...">
-                                <div id="genre_suggestions" class="list-group mt-1" style="position: absolute; z-index: 1000;"></div>
-                            </div>
-                            
-                            <div class="form-group mb-4">
-                                <label for="selected_genre">Thể loại đã chọn</label>
-                                <input type="text"
-                                       id="selected_genre"
-                                       class="form-control"
-                                       readonly
-                                       style="color: black;"
-                                       value="{{song.genre.name}}">
-                                <input type="hidden" name="genre" id="genre_id" value="{{song.genre.id}}"> <!-- field thực gửi -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="genre">Thể loại <strong class="text-danger">*</strong></label>
+                                        <select name="genre" id="sGenre" class="form-control {% if form.genre.errors %}is-invalid{% endif %}">
+                                            {% for genre in genres %}
+                                            <option value="{{ genre.id }}" {% if genre.id == form.genre.value %}selected{% endif %}>
+                                                {{ genre.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        {% for error in form.genre.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
                             
 
@@ -215,7 +187,33 @@ Chỉnh sửa bài hát
 {% endblock %}
 
 {% block custom_scripts %}
+<script src="{% static 'plugins/tomSelect/tom-select.base.js' %}"></script>
+<script src="{% static 'plugins/tomSelect/custom-tom-select.js' %}"></script>
 <script>
+    new TomSelect("#sArtist", {
+        placeholder : "Chọn nghệ sĩ",
+        sortField : {
+            field : "text",
+            direction : "asc"
+        }
+    });
+    
+    new TomSelect("#sAlbum", {
+        placeholder : "Chọn album",
+        sortField : {
+            field : "text",
+            direction : "asc"
+        }
+    });
+
+    new TomSelect("#sGenre", {
+        placeholder : "Chọn thể loại",
+        sortField : {
+            field : "text",
+            direction : "asc"
+        }
+    });
+
     const fileInput = document.getElementById('file_url');
     const audioPreview = document.getElementById('audio-preview');
     const audioSource = document.getElementById('audio-source');
@@ -233,149 +231,5 @@ Chỉnh sửa bài hát
     });
 </script>
 
-{{ artists|json_script:"artist-data" }}
-{{ albums|json_script:"album-data" }}
-{{ genres|json_script:"genre-data" }}
-
-<script>
-  
-    const artists = JSON.parse(document.getElementById('artist-data').textContent);
-    const input = document.getElementById('artist_search');
-    const suggestionBox = document.getElementById('artist_suggestions');
-    const selectedArtist = document.getElementById('selected_artist');
-    const hiddenArtistId = document.getElementById('artist_id');
-
-    input.addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        suggestionBox.innerHTML = '';
-
-        if (query.length === 0) return;
-
-        const filtered = artists.filter(a => a.name.toLowerCase().includes(query));
-        filtered.forEach(artist => {
-            const item = document.createElement('button');
-            item.type = 'button';
-            item.className = 'list-group-item list-group-item-action';
-            item.textContent = artist.name;
-            item.onclick = function () {
-                selectedArtist.value = artist.name;
-                hiddenArtistId.value = artist.id;
-                suggestionBox.innerHTML = '';
-                input.value = ''; 
-            };
-            suggestionBox.appendChild(item);
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (!suggestionBox.contains(e.target) && e.target !== input) {
-            suggestionBox.innerHTML = '';
-        }
-    });
-</script>
-
-<script>
-  
-    const albums = JSON.parse(document.getElementById('album-data').textContent);
-    const input_album = document.getElementById('album_search');
-    const suggestionBox_album = document.getElementById('album_suggestions');
-    const selectedAlbum = document.getElementById('selected_album');
-    const hiddenAlbumId = document.getElementById('album_id');
-
-    input_album.addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        suggestionBox_album.innerHTML = '';
-
-        if (query.length === 0) return;
-
-        const filtered = albums.filter(a => a.title.toLowerCase().includes(query));
-        filtered.forEach(album => {
-            const item = document.createElement('button');
-            item.type = 'button';
-            item.className = 'list-group-item list-group-item-action';
-            item.textContent = album.title;
-            item.onclick = function () {
-                selectedAlbum.value = album.title;
-                hiddenAlbumId.value = album.id;
-                suggestionBox_album.innerHTML = '';
-                input_album.value = ''; 
-            };
-            suggestionBox_album.appendChild(item);
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (!suggestionBox_album.contains(e.target) && e.target !== input) {
-            suggestionBox_album.innerHTML = '';
-        }
-    });
-
-    const cb_noAlbum = document.getElementById('no_album_checkbox');
-    cb_noAlbum.addEventListener('change',function(){
-        if (this.checked) {
-        input_album.disabled = true; 
-        selectedAlbum.value = '';
-        hiddenAlbumId.value = '';
-    } else {
-        input_album.disabled = false;
-    }
-    })
-</script>
-
-<script>
-    const genres = JSON.parse(document.getElementById('genre-data').textContent);
-    const input_genre = document.getElementById('genre_search');
-    const suggestionBox_genre = document.getElementById('genre_suggestions');
-    const selectedGenre = document.getElementById('selected_genre');
-    const hiddenGenreId = document.getElementById('genre_id');
-
-    input_genre.addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        suggestionBox_genre.innerHTML = '';
-
-        if (query.length === 0) return;
-
-        const filtered = genres.filter(genre => genre.name.toLowerCase().includes(query));
-        filtered.forEach(genre => {
-            const item = document.createElement('button');
-            item.type = 'button';
-            item.className = 'list-group-item list-group-item-action';
-            item.textContent = genre.name;
-            item.onclick = function () {
-                selectedGenre.value = genre.name;
-                hiddenGenreId.value = genre.id;
-                suggestionBox_genre.innerHTML = '';
-                input_genre.value = ''; 
-            };
-            suggestionBox_genre.appendChild(item);
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (!suggestionBox_genre.contains(e.target) && e.target !== input_genre) {
-            suggestionBox_genre.innerHTML = '';
-        }
-    });
-</script>
-
-
-<script>
-    const videofileInput = document.getElementById('video_file');
-    const videoPreview = document.getElementById('video-preview');
-    const videoSource = document.getElementById('video-source');
-
-    videofileInput.addEventListener('change', function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            videoSource.src = url;
-            videoPreview.load();
-            videoPreview.style.display = 'block';
-        } else {
-            videoSource.src = '';
-            videoPreview.style.display = 'none';
-        }
-    });
-</script>
 
 {% endblock %}
