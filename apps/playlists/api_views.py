@@ -16,9 +16,17 @@ from django.http import JsonResponse
 from apps.album_plays.services.album_plays_service import AlbumPlayService
 from apps.playlists.services.playlists_services import PlaylistService
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
+from rest_framework import status
 playlist_repo = PlaylistService()
-
+@api_view(['GET', 'POST']) 
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_playlists_user_id(request):
     if request.method == HTTP_METHOD_GET:
         try:

@@ -14,10 +14,16 @@ from apps.chat_messages.services.chat_message_service import ChatMessageService
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import localtime
-
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
+from rest_framework import status
 chat_repo = ChatService()
 chat_message_repo = ChatMessageService()
-@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def create_message(request,chat_id):
     if request.method == HTTP_METHOD_POST:
         try:
@@ -39,7 +45,10 @@ def create_message(request,chat_id):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-    return JsonResponse({'error': 'Invalid request method'}, status=405)            
+    return JsonResponse({'error': 'Invalid request method'}, status=405)       
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])     
 def get_all_messages_chat_id(request, chat_id):
     if request.method == HTTP_METHOD_POST:
         try:

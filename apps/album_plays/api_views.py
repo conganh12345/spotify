@@ -16,9 +16,15 @@ from django.http import JsonResponse
 from apps.album_plays.services.album_plays_service import AlbumPlayService
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
+from rest_framework import status
 album_play_repo = AlbumPlayService()
-
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def add(request):
     if request.method == HTTP_METHOD_POST:
         try:
