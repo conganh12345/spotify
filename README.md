@@ -55,3 +55,6 @@
   
 
 
+8. Cài thư viện này để lấy token đăng nhập JWT
+  - pip install djangorestframework-simplejwt
+

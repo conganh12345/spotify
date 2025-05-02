@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'apps.chat_messages',
     'rest_framework',
     'channels',
+    'corsheaders'
 ]
 
 ASGI_APPLICATION = 'spotify.asgi.application'
@@ -71,7 +72,7 @@ CHANNEL_LAYERS = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # FE chạy trên port này
+    "http://localhost:5173",  # FE chạy trên port này
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -141,6 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -172,8 +178,3 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}

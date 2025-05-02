@@ -24,3 +24,6 @@ class ArtistService:
     def search_artist(self, keyword):
         return self.artist_repo.search_artist(keyword)
     
+    def get_artist_id(self,id):
+        return self.artist_repo.get_artist_id(id)
+    

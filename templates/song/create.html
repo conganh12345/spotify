@@ -62,7 +62,26 @@ Thêm mới bài hát
                                         {% endfor %}
                                     </div>
                                 </div>
-                            </div>                            
+                            </div> 
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="image_url">Ảnh đại diện <strong class="text-danger">*</strong></label>
+                                        <input name="image"
+                                               type="file"
+                                               id="image_url"
+                                               accept="image/*"
+                                               required
+                                               class="form-control {% if form.image_url.errors %}is-invalid{% endif %}">
+                                        {% for error in form.image_url.errors %}
+                                        <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        <img id="selected-avatar" style="display: none; max-width: 50%; height: auto;" alt="Selected Image">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
@@ -84,6 +103,27 @@ Thêm mới bài hát
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="video_file">File video <strong class="text-danger">*</strong></label>
+                                        <input name="video_file"
+                                               type="file"
+                                               id="video_file"
+                                               accept="video/*"
+                                               class="form-control {% if form.video_file.errors %}is-invalid{% endif %}">
+                                        {% for error in form.video_file.errors %}
+                                            <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                        {% endfor %}
+                                        
+                                        <!-- Xem trước video -->
+                                        <video id="video-preview" controls style="display: none; margin-top: 10px; width: 100%;">
+                                            <source id="video-source" src="" type="video/mp4">
+                                            Trình duyệt không hỗ trợ video.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- ARTISTSARTISTS-->
                             <div class="form-group mb-4">
@@ -285,6 +325,23 @@ Thêm mới bài hát
     document.addEventListener('click', function (e) {
         if (!suggestionBox_genre.contains(e.target) && e.target !== input_genre) {
             suggestionBox_genre.innerHTML = '';
+        }
+    });
+
+    const videofileInput = document.getElementById('video_file');
+    const videoPreview = document.getElementById('video-preview');
+    const videoSource = document.getElementById('video-source');
+
+    videofileInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            videoSource.src = url;
+            videoPreview.load();
+            videoPreview.style.display = 'block';
+        } else {
+            videoPreview.style.display = 'none';
+            videoSource.src = '';
         }
     });
 </script>

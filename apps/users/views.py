@@ -82,3 +82,4 @@ def delete_user(request, id):
             return JsonResponse({'error': str(e)}, status=404)
 
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
+

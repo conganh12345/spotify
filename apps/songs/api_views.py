@@ -23,7 +23,6 @@ song_repo = SongService()
 album_repo = AlbumService()
 artist_repo = ArtistService()
 ''' search  bài hát: genre,  album, ca sĩ'''
-
 def search_songs(request):
     if request.method == HTTP_METHOD_GET:
         try:
@@ -95,24 +94,27 @@ def search_songs(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-def get_detail_songs(request, song_id):
+            
+def get_songs_id(request, song_id):
     if request.method == HTTP_METHOD_GET:
         try:
-           songs = song_repo.get_song_id(song_id)
-           results = {
-               'id' : songs.id,
-               'artist' : songs.artist.name,
-               'album': songs.album.title,
-               'duration': songs.duration,
-               'file_url': songs.file_url,
-               'created_at': songs.created_at
-           }
-           return JsonResponse({'success': True, 'result': results})
+            song_detail = song_repo.get_song_id(song_id)
+            
+            song_data = {
+                'id': song_detail.id,
+                'title': song_detail.title,
+                'artist': song_detail.artist.name if song_detail.artist else None,
+                'duration': song_detail.duration,
+                'file_url': song_detail.file_url,
+                'image_url': song_detail.image_url,
+                'album': song_detail.album.title if song_detail.album else None,
+                'genre': song_detail.genre.name if song_detail.genre else None,
+                'created_at': song_detail.created_at
+            }
+
+            return JsonResponse({'success': True, 'result': song_data})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
-
     return JsonResponse({'error': 'Invalid request method'}, status=405)
-     
 
-    
             

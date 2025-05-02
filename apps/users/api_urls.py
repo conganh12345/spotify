@@ -1,14 +1,13 @@
-from rest_framework.routers import DefaultRouter
-from apps.genres.api_views import GenreViewSet
-from . import api_views
+from django.contrib import admin
 from django.urls import path
+from . import api_views
+from rest_framework_simplejwt.views import TokenRefreshView
+from .api_views import UserUpdateView
+from .api_views import SignupView
 
-router = DefaultRouter()
-router.register(r'users', UserViewSet, basename='user')
-
-urlpatterns = router.urls
-urlpatterns = router.urls + [
-    path('genres/genres/<int:genre_id>', api_views.get_songs_by_genre_id, name='genre-custom'),
+urlpatterns = [
+    path('api/token/', api_views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('users/<int:pk>/', UserUpdateView.as_view(), name='user-update'),
+    path('signup/', SignupView.as_view(), name='signup')
 ]
-
-#http://localhost:8000/api/genres/
