@@ -27,6 +27,7 @@ def create_album(request):
     today = date.today().isoformat()
     artists = artist_repo.get_all_artists()
     artists_json = list(artists.values('id','name'))
+    
     if request.method == HTTP_METHOD_POST:
         form = AlbumCreateForm(request.POST)
         if form.is_valid():

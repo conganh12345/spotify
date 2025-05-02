@@ -52,11 +52,9 @@
   - sudo apt update (lệnh này chỉ cần 1 lần)
   - sudo apt install redis-server ( cài redis)
    sau khi làm phần chat thì mỗi lần chạy project phải xài các lệnh này
-  - bật ubuntu chạy "redis-sever"
+  - bật ubuntu chạy "redis-server"
   - run project django = lệnh này "daphne -p 8000 spotify.asgi:application"
   
-
-
 8. Cài thư viện này để lấy token đăng nhập JWT
   - pip install djangorestframework-simplejwt
 
