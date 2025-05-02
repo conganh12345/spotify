@@ -88,7 +88,6 @@ Quản lý bài hát
                     <th style="width: 15%">Tên</th>
                     <th style="width: 20%">Chi tiết</th>
                     <th>Thời lượng</th>   
-                    <th>MP4</th> 
                     <th>Video</th>
                     <th>Ngày tạo</th>
                     <th style="width: 30%">Ảnh</th>
@@ -123,7 +122,7 @@ Quản lý bài hát
                 </td>  
                 <td>{{ song.duration|duration_format }}</td>
                 
-                {% url 'song_file' song.id as song_file_url %}
+                <!-- {% url 'song_file' song.id as song_file_url %}
                 <td>
                     <a onclick="window.open('{{ song_file_url }}', '_blank')" target="_blank" class="btn-warning p-2 rounded text-nowrap">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +135,7 @@ Quản lý bài hát
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>LINK
                     </a>`;
-                </td>
+                </td> -->
                 
                 {% url 'song_video' song.id as song_video_url %}
                 <td>

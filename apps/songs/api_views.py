@@ -59,6 +59,7 @@ def search_songs(request):
                 },
                 'duration': song.duration,
                 'file_url': song.file_url,
+                'image_url': song.image_url,
                 'created_at': song.created_at.strftime('%Y-%m-%d %H:%M:%S')
             } for song in songs]
 
