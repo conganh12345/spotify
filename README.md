@@ -41,17 +41,19 @@
   - pip install djangorestframework
   - pip install mutagen (thư viện để tính thời gian file MP3)
   - pip install django-cors-headers (Để Django chấp nhận cookie từ ReactJS, bạn   cần cấu hình CORS và bật CORS_ALLOW_CREDENTIALS.)
-  - pip install channels (websocket)
+  ----------------------PHẦN CHAT ---------------------------
+  - pip install channels ( để sử dụng websocket)
   - pip install channels_redis ( WebSocket dùng Redis để quản lý các channel)
   - pip install daphne
   - pip install whitenoise
   - python manage.py collectstatic (chạy 1 lần cho về sau, hoặc mỗi lần có thay đổi trong folder static thì chạy lại)
+  - tải wls trong CMD " wsl --install " 
   - vô microsoft store tải Ubuntu 
-  - bật wls ở cmd
   - sudo apt update (lệnh này chỉ cần 1 lần)
-  - sudo apt install redis-server ( chạy redis)
-   sau khi làm phần chat thì mỗi lần chạy project phải xài lệnh này
-  daphne -p 8000 spotify.asgi:application
+  - sudo apt install redis-server ( cài redis)
+   sau khi làm phần chat thì mỗi lần chạy project phải xài các lệnh này
+  - bật ubuntu chạy "redis-sever"
+  - run project django = lệnh này "daphne -p 8000 spotify.asgi:application"
   
 
 
