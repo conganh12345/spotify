@@ -12,5 +12,6 @@ class ArtistRepository(BaseRepository, ArtistepositoryInterface):
     def get_artist_id(self, id):
         return Artist.objects.prefetch_related('songs__album').get(pk=id)
 
-
+    def count_all_artist(self):
+        return self.model.objects.count()
 

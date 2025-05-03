@@ -8,4 +8,5 @@ class GenreRepository(BaseRepository, GenreRepositoryInterface):
     def get_genre_id(self,genre_id):
         return Genre.objects.get(id=genre_id)
 
-   
+    def count_all_genre(self):
+        return self.model.objects.count()

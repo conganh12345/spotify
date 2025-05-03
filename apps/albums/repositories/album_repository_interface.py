@@ -3,3 +3,7 @@ from abc import abstractmethod
 
 class AlbumRepositoryInterface(BaseRepositoryInterface):
    pass
+
+   @abstractmethod
+   def count_all_album(self):
+      pass

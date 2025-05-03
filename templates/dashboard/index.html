@@ -1,88 +1,305 @@
 {% extends 'layouts/base-layout.html' %}
 {% load static %}
-
-{% block title %}
-Bảng điêu khiển
-{% endblock %}
-
+{% block title %}Bảng điều khiển{% endblock %}
 {% block content %}
+{% load humanize %}
 <div class="middle-content container-xxl p-0">
-    <div class="row layout-top-spacing">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="row widget-statistic">
-                <div
-                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
-                    <div class="widget widget-one_hybrid widget-followers">
-                        <div class="widget-heading">
-                            <div class="w-title">
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-users">
-                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="9" cy="7" r="4"></circle>
-                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                </div>
-                                <div class="">
-                                    <p class="w-value">10.000</p>
-                                    <h5 class="">Số lượng người dùng</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget-content">
-                            <div class="w-chart">
-                                <div id="hybrid_followers"></div>
-                            </div>
-                        </div>
-                    </div>
+  <div class="row layout-top-spacing">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="row widget-statistic">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
+          <div class="widget widget-one_hybrid widget-followers">
+            <div class="widget-heading">
+              <div class="w-title">
+                <div class="w-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
                 </div>
-                <div
-                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
-                    <div class="widget widget-one_hybrid widget-referral">
-                        <div class="widget-heading">
-                            <div class="w-title">
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hard-drive"><line x1="22" y1="12" x2="2" y2="12"></line><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><line x1="6" y1="16" x2="6.01" y2="16"></line><line x1="10" y1="16" x2="10.01" y2="16"></line></svg>
-                                </div>
-                                <div class="">
-                                    <p class="w-value">500</p>
-                                    <h5 class="">Số lượng bái hát</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget-content">
-                            <div class="w-chart">
-                                <div id="hybrid_followers1"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="">
+                  <p class="w-value">{{ user_count|intcomma }}</p>
+                  <h5 class="">Người dùng</h5>
                 </div>
-                <div
-                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
-                    <div class="widget widget-one_hybrid widget-engagement">
-                        <div class="widget-heading">
-                            <div class="w-title">
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-youtube"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-                                </div>
-                                <div class="">
-                                    <p class="w-value">200.000</p>
-                                    <h5 class="">Số lượng lượt nghe</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget-content">
-                            <div class="w-chart">
-                                <div id="hybrid_followers3"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+            <div class="widget-content">
+              <div class="w-chart">
+                <div id="hybrid_followers"></div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
+          <div class="widget widget-one_hybrid widget-engagement">
+            <div class="widget-heading">
+              <div class="w-title">
+                <div class="w-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div class="">
+                  <p class="w-value">{{ artist_count|intcomma }}</p>
+                  <h5 class="">Nghệ sĩ</h5>
+                </div>
+              </div>
+            </div>
+            <div class="widget-content">
+              <div class="w-chart">
+                <div id="hybrid_followers3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
+          <div class="widget widget-one_hybrid widget-engagement">
+            <div class="widget-heading">
+              <div class="w-title">
+                <div class="w-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-youtube">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                  </svg>
+                </div>
+                <div class="">
+                  <p class="w-value">{{ genre_count|intcomma }}</p>
+                  <h5 class="">Thể loại</h5>
+                </div>
+              </div>
+            </div>
+            <div class="widget-content">
+              <div class="w-chart">
+                <div id="hybrid_followers3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
+          <div class="widget widget-one_hybrid widget-referral">
+            <div class="widget-heading">
+              <div class="w-title">
+                <div class="w-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hard-drive">
+                    <line x1="22" y1="12" x2="2" y2="12"></line>
+                    <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                    <line x1="6" y1="16" x2="6.01" y2="16"></line>
+                    <line x1="10" y1="16" x2="10.01" y2="16"></line>
+                  </svg>
+                </div>
+                <div class="">
+                  <p class="w-value">{{ song_count|intcomma }}</p>
+                  <h5 class="">Bài hát</h5>
+                </div>
+              </div>
+            </div>
+            <div class="widget-content">
+              <div class="w-chart">
+                <div id="hybrid_followers1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
+          <div class="widget widget-one_hybrid widget-engagement">
+            <div class="widget-heading">
+              <div class="w-title">
+                <div class="w-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-youtube">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                  </svg>
+                </div>
+                <div class="">
+                  <p class="w-value">{{ album_count|intcomma }}</p>
+                  <h5 class="">Album</h5>
+                </div>
+              </div>
+            </div>
+            <div class="widget-content">
+              <div class="w-chart">
+                <div id="hybrid_followers3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="widget widget-chart-three">
+          <div class="widget-heading">
+            <h5 class="">Thống kê lượt phát bài hát (15 ngày gần nhất)</h5>
+          </div>
+
+          <div class="widget-content">
+            <div id="chart-play-count" class="" style="height: 350px"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<style>
+  .apexcharts-title-text {
+    font-family: Nunito, sans-serif !important;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .flatpickr-calendar .flatpickr-monthDropdown-months {
+    display: inline-block;
+    width: auto;
+  }
+
+  .flatpickr-calendar .flatpickr-current-month {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .widget-chart-three {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .widget-chart-three .widget-heading h5 {
+    font-family: Nunito, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  #chart-play-count {
+    background: #f9f9f9;
+    border-radius: 6px;
+    padding: 10px;
+  }
+
+  .apexcharts-canvas {
+    border-radius: 6px;
+  }
+
+  .apexcharts-legend {
+    padding: 10px !important;
+  }
+
+  .apexcharts-legend-text {
+    font-family: Nunito, sans-serif !important;
+    font-size: 14px !important;
+    color: #555 !important;
+  }
+
+  .apexcharts-xaxis-title, .apexcharts-yaxis-title {
+    font-family: Nunito, sans-serif !important;
+    font-size: 14px;
+    font-weight: 500;
+    fill: #666;
+  }
+
+  .apexcharts-xaxis text, .apexcharts-yaxis text {
+    font-family: Nunito, sans-serif !important;
+    font-size: 12px;
+    fill: #888;
+  }
+
+  .widget-one_hybrid {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+  }
+
+  .widget-one_hybrid:hover {
+    transform: translateY(-3px);
+  }
+
+  .w-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .w-icon svg {
+    stroke: #1b55e2;
+  }
+
+  .w-value {
+    font-family: Nunito, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1b55e2;
+    margin: 0;
+  }
+
+  .widget-heading h5 {
+    font-family: Nunito, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    margin: 5px 0 0;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('/api/songs/plays/')
+      .then(response => response.json())
+      .then(data => {
+        const categories = Object.keys(data);
+        const seriesData = Object.values(data);
+
+        var options = {
+          chart: {
+            height: 350,
+            type: 'line',
+            zoom: { enabled: false },
+            toolbar: { show: true }
+          },
+          dataLabels: { enabled: true },
+          stroke: { curve: 'straight', width: 3 },
+          series: [{
+            name: "Lượt phát",
+            data: seriesData
+          }],
+          xaxis: {
+            categories: categories,
+            title: { text: "Ngày", style: { fontSize: '14px', fontFamily: 'Nunito, sans-serif' } },
+            labels: { style: { fontSize: '12px', fontFamily: 'Nunito, sans-serif' } }
+          },
+          yaxis: {
+            title: { text: "Lượt phát", style: { fontSize: '14px', fontFamily: 'Nunito, sans-serif' } },
+            labels: { style: { fontSize: '12px', fontFamily: 'Nunito, sans-serif' } }
+          },
+          colors: ['#1b55e2'],
+          title: {
+            text: "Biểu đồ lượt phát bài hát",
+            align: 'left',
+            style: { fontSize: '20px', fontFamily: 'Nunito, sans-serif', fontWeight: 600 }
+          },
+          grid: {
+            borderColor: '#e0e0e0',
+            strokeDashArray: 4
+          },
+          tooltip: {
+            theme: 'light',
+            style: { fontSize: '12px', fontFamily: 'Nunito, sans-serif' }
+          }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-play-count"), options);
+        chart.render();
+      });
+  });
+</script>
 {% endblock %}

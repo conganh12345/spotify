@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'apps.chat_messages',
     'rest_framework',
     'channels',
-    'corsheaders'
+    'corsheaders',
+    'django.contrib.humanize'
 ]
 
 ASGI_APPLICATION = 'spotify.asgi.application'

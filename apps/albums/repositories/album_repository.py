@@ -19,5 +19,8 @@ class AlbumRepository(BaseRepository, AlbumRepositoryInterface):
             Q(title__icontains=keyword)|
             Q(artist__name__icontains = keyword)
         )
+    
+    def count_all_album(self):
+        return self.model.objects.count()
 
    
