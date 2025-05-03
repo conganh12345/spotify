@@ -32,17 +32,17 @@ class SongPlayRepository(BaseRepository, SongPlayRepositoryInterface):
         except SongPlay.DoesNotExist:
             return None
         
-      def get_play_stats_last_15_days(self):
+      def get_song_play_stats_last_15_days(self):
         end_date = timezone.now().date()
         start_date = end_date - timedelta(days=14)
         stats = {}
 
         for single_date in (start_date + timedelta(n) for n in range(15)):
             date_str = single_date.strftime('%Y-%m-%d')
-            # Define the start and end of the day
+
             day_start = timezone.make_aware(datetime.combine(single_date, datetime.min.time()))
             day_end = day_start + timedelta(days=1)
-            # Filter records within the day's range
+
             total_plays = SongPlay.objects.filter(
                 played_at__gte=day_start,
                 played_at__lt=day_end
