@@ -138,9 +138,20 @@
           </div>
 
           <div class="widget-content">
-            <div id="chart-play-count" class="" style="height: 350px"></div>
+            <div id="chart-song-play-count" class="" style="height: 350px"></div>
           </div>
         </div>
+
+        <div class="widget widget-chart-three">
+          <div class="widget-heading">
+            <h5 class="">Thống kê lượt phát album (15 ngày gần nhất)</h5>
+          </div>
+
+          <div class="widget-content">
+            <div id="chart-album-play-count" class="" style="height: 350px"></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -179,7 +190,7 @@
     margin-bottom: 15px;
   }
 
-  #chart-play-count {
+  #chart-song-play-count, #chart-album-play-count  {
     background: #f9f9f9;
     border-radius: 6px;
     padding: 10px;
@@ -297,9 +308,58 @@
           }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-play-count"), options);
+        var chart = new ApexCharts(document.querySelector("#chart-song-play-count"), options);
         chart.render();
       });
   });
+
+    fetch('/api/albums/plays/')
+      .then(response => response.json())
+      .then(data => {
+        const categories = Object.keys(data);
+        const seriesData = Object.values(data);
+
+        var options = {
+          chart: {
+            height: 350,
+            type: 'line',
+            zoom: { enabled: false },
+            toolbar: { show: true }
+          },
+          dataLabels: { enabled: true },
+          stroke: { curve: 'straight', width: 3 },
+          markers: { size: 5, hover: { size: 7 } },
+          series: [{
+            name: "Lượt phát album",
+            data: seriesData
+          }],
+          xaxis: {
+            categories: categories,
+            title: { text: "Ngày", style: { fontSize: '14px', fontFamily: 'Nunito, sans-serif' } },
+            labels: { style: { fontSize: '12px', fontFamily: 'Nunito, sans-serif' } }
+          },
+          yaxis: {
+            title: { text: "Lượt phát", style: { fontSize: '14px', fontFamily: 'Nunito, sans-serif' } },
+            labels: { style: { fontSize: '12px', fontFamily: 'Nunito, sans-serif' } }
+          },
+          colors: ['#e67e22'],
+          title: {
+            text: "Biểu đồ lượt phát album",
+            align: 'left',
+            style: { fontSize: '20px', fontFamily: 'Nunito, sans-serif', fontWeight: 600 }
+          },
+          grid: {
+            borderColor: '#e0e0e0',
+            strokeDashArray: 4
+          },
+          tooltip: {
+            theme: 'light',
+            style: { fontSize: '12px', fontFamily: 'Nunito, sans-serif' }
+          }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-album-play-count"), options);
+        chart.render();
+      });
 </script>
 {% endblock %}

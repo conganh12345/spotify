@@ -13,5 +13,5 @@ class SongPlayRepositoryInterface(BaseRepositoryInterface):
       pass
 
    @abstractmethod
-   def get_play_stats_last_15_days(self):
+   def get_song_play_stats_last_15_days(self):
       pass

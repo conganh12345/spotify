@@ -7,9 +7,11 @@ from apps.genres.repositories.genre_repository import GenreRepository
 from apps.songs.repositories.song_repository import SongRepository
 from apps.albums.repositories.album_repository import AlbumRepository
 from apps.song_plays.repositories.song_plays_repository import SongPlayRepository
+from apps.album_plays.repositories.album_plays_repository import AlbumPlayRepository
 
 
 song_play_repo = SongPlayRepository()
+album_play_repo = AlbumPlayRepository()
 genre_repo = GenreRepository()
 user_repo = UserRepository()
 artist_repo = ArtistRepository()
@@ -37,5 +39,9 @@ def index(request):
 
 
 def get_song_plays(request):
-    play_stats = song_play_repo.get_play_stats_last_15_days()
+    play_stats = song_play_repo.get_song_play_stats_last_15_days()
+    return JsonResponse(play_stats)
+
+def get_album_plays(request):
+    play_stats = album_play_repo.get_album_play_stats_last_15_days()
     return JsonResponse(play_stats)
