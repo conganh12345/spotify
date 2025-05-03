@@ -83,10 +83,10 @@ Quản lý album
             <thead>
                 <tr>
                     <th style="width: 5%">ID</th>
+                    <th style="width: 20%">Ảnh</th>
                     <th style="width: 20%">Tên</th>
+                    <th style="width: 25%">Tên nghệ sĩ</th>
                     <th style="width: 20%">Ngày phát hành</th>
-                    <th style="width: 25%">Tên ca sĩ</th>
-                    <th style="width: 25%">Ảnh</th>
                     <th class="no-content" style="width: 5%">Thao tác</th>
                   </tr>
                   
@@ -94,9 +94,6 @@ Quản lý album
             <tbody>
               {% for album in albums %}
                 <td>{{ album.id }}</td>
-                <td>{{ album.title }}</td>
-                <td>{{ album.release_date }}</td>
-                <td>{{ album.artist.name }}</td>
                 <td>
                   {% if album.image_url %}
                   <img src="/media/{{ album.image_url }}" alt="Ảnh đại diện" style="max-width: 150px; height: auto;">
@@ -104,6 +101,14 @@ Quản lý album
                   <span>Không có ảnh</span>
                   {% endif %}
                 </td>
+                <td>{{ album.title }}</td>
+                <td>
+                    <span class="badge bg-dark">
+                      {{ album.artist.name }}
+                    </span>
+                </td>
+                <td>{{ album.release_date }}</td>
+        
                 <td
                   class="table-controls justify-content-center align-items-center pt-2"
                 >

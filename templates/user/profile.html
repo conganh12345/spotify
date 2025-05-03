@@ -1,0 +1,153 @@
+{% extends 'layouts/base-layout.html' %}
+{% load static %}
+
+{% block title %}
+Hồ sơ người dùng
+{% endblock %}
+
+{% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/assets/light/users/account-setting.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/assets/dark/users/account-setting.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/light/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/dark/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/tomSelect/tom-select.default.min.css' %}">
+<style>
+    .ts-control{
+           padding: 12px;
+      }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="middle-content container-xxl p-0">
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Người dùng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Hồ sơ người dùng</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="account-settings-container layout-top-spacing">
+        <div class="account-content">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2>Hồ sơ </h2>
+
+                </div>
+            </div>
+
+            <div class="tab-content" id="animateLineContent-4">
+                <div class="tab-pane fade show active" id="animated-underline-home" role="tabpanel" aria-labelledby="animated-underline-home-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info" action="{% url 'user_profile' %}" id="general-settings" method="POST">
+                                {% csrf_token %}
+                                <div class="info">
+                                    <h6 class="">Thông tin chung</h6>
+                                    <div class="row">
+                                        <div class="col-lg-11 mx-auto">
+                                            <div class="row">
+                                                
+                                                <div class="col-xl-10 col-lg-12 col-md-8 mt-md-0 mt-4">
+                                                    <div class="form">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="Name">Tên người dùng </label>
+                                                                    <input name="username"
+                                                                           type="text"
+                                                                           id="UserName"
+                                                                           class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                                                           placeholder="Tên người dùng"
+                                                                           value="{{ form.username.value|default:user.username }}">
+                                                                    {% for error in form.username.errors %}
+                                                                    <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="Email">Email </label>
+                                                                    <input name="email"
+                                                                           type="text"
+                                                                           id="Email"
+                                                                           class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                                                           placeholder="Email"
+                                                                           value="{{ form.email.value|default:user.email }}">
+                                                                    {% for error in form.email.errors %}
+                                                                    <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            {% comment %} <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="Password">Mật khẩu mới</label>
+                                                                    <input name="password"
+                                                                           type="password"
+                                                                           id="Password"
+                                                                           class="form-control {% if form.password.errors %}is-invalid{% endif %}"
+                                                                           placeholder="Để trống nếu không muốn thay đổi">
+                                                                    {% for error in form.password.errors %}
+                                                                    <span class="invalid-feedback" role="alert">{{ error }}</span>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div> {% endcomment %}
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="group">Nhóm quyền </label>
+                                                                    <select name="groups" id="group" class="form-control {% if form.groups.errors %}is-invalid{% endif %}" multiple>
+                                                                        {% for group in groups %}
+                                                                        <option value="{{ group.id }}" {% if group in user.groups.all %}selected{% endif %}>
+                                                                            {{ group.name }}
+                                                                        </option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                    {% for error in form.groups.errors %}
+                                                                    <span class="text-danger">{{ error }}</span>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_scripts %}
+<script src="{% static 'js/assets/users/account-settings.js' %}"></script>
+<script src="{% static 'plugins/tomSelect/tom-select.base.js' %}"></script>
+<script src="{% static 'plugins/tomSelect/custom-tom-select.js' %}"></script>
+<script>
+    const select = new TomSelect("#group", {
+        sortField : {
+            field : "text",
+            direction : "asc"
+        }
+    });
+    
+</script>
+
+{% endblock %}

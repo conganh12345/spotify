@@ -31,8 +31,10 @@ class UserService:
     def update_user(self, user, form, groups, password=None):
         updated_user = form.save(commit=False)
 
-        if password:
+        if password is not None and password != '':
             updated_user.set_password(password)
+        else:
+            updated_user.password = user.password 
 
         update_data = {
             'username': updated_user.username,

@@ -49,14 +49,13 @@ def edit_user(request, user_id):
     
     if request.method == HTTP_METHOD_POST:
         form = UserEditForm(request.POST, instance=user)
-        password = request.POST.get('password')  
         if form.is_valid():
             try:
                 user_service.update_user(
                     user, 
                     form, 
                     request.POST.getlist('groups'), 
-                    password=password
+                    password=request.POST.get('password') or None
                 )
                 messages.success(request, 'Cập nhật người dùng thành công!')
                 return redirect('user_index')
@@ -84,3 +83,31 @@ def delete_user(request, id):
 
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
 
+@login_required
+def user_profile(request):
+    user = request.user
+    groups = group_service.get_all_groups()
+    if request.method == HTTP_METHOD_POST:
+        form = UserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            try:
+                user_service.update_user(
+                    user, 
+                    form, 
+                    request.POST.getlist('groups'), 
+                    password=request.POST.get('password') or None
+                )
+                messages.success(request, 'Cập nhật người dùng thành công!')
+                return redirect('user_index')
+            except ValidationError as e:
+                messages.error(request, f'Lỗi: {e}')
+        else:
+            messages.error(request, 'Đã xảy ra lỗi!')
+    else:
+        form = UserEditForm(instance=user)
+
+    return render(request, 'user/profile.html', {
+        'form': form,
+        'user': user,
+        'groups': groups
+    })
