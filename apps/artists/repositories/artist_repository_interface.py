@@ -3,3 +3,7 @@ from abc import abstractmethod
 
 class ArtistepositoryInterface(BaseRepositoryInterface):
     pass
+
+    @abstractmethod
+    def count_all_artist(self):
+        pass

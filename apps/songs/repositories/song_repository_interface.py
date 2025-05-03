@@ -3,3 +3,7 @@ from abc import abstractmethod
 
 class SongRepositoryInterface(BaseRepositoryInterface):
    pass
+
+   @abstractmethod
+   def count_all_song(self):
+      pass

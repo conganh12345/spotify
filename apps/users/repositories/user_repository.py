@@ -8,3 +8,6 @@ class UserRepository(BaseRepository, UserRepositoryInterface):
 
     def find_by_email(self, email):
         return self.model.objects.filter(email=email).first()
+    
+    def count_all_user(self):
+        return self.model.objects.count()

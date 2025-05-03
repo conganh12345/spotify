@@ -24,5 +24,8 @@ class SongRepository(BaseRepository, SongRepositoryInterface):
         return Song.objects.filter(genre_id=genre_id)    
     '''Q(genre_name=keyword) |'''
 
+    def count_all_song(self):
+        return self.model.objects.count()
+
 
    

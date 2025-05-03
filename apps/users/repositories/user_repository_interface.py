@@ -5,3 +5,6 @@ class UserRepositoryInterface(BaseRepositoryInterface):
     @abstractmethod
     def find_by_email(self, email):
         pass
+    @abstractmethod
+    def count_all_user(self):
+        pass
