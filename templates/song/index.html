@@ -127,22 +127,19 @@ Quản lý bài hát
                       </span>
                   </p>
                 </td>  
-                <td>{{ song.duration|duration_format }}</td>
-                
-                <!-- {% url 'song_file' song.id as song_file_url %}
+
+
                 <td>
-                    <a onclick="window.open('{{ song_file_url }}', '_blank')" target="_blank" class="btn-warning p-2 rounded text-nowrap">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"
-                        >
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>LINK
-                    </a>`;
-                </td> -->
+                  <p class="text-start me-1">
+                      Thời lượng:
+                      <span class="text-primary">{{ song.duration|duration_format }}</span>
+                  </p>
+                  <p class="text-start me-1">
+                      Lượt nghe:
+                      <span class="text-primary">{{ song.plays_total|default:0 }}</span>
+                  </p>
+                 
+                </td>  
                 
                 {% url 'song_video' song.id as song_video_url %}
                 <td>
@@ -158,18 +155,6 @@ Quản lý bài hát
                       </svg>VIDEO
                   </a>
               </td>
-
-                <!--
-                <td style="cursor: pointer; ">
-                  
-                    <audio controls style="width: 100%;">
-                      <source src="/media/{{ song.file_url }}" type="audio/mpeg">
-                      Trình duyệt của bạn không hỗ trợ audio.
-                    </audio>
-                    
-                    
-                </td>
-                -->
 
                 <td>{{ song.created_at }}</td>     
                 <td
@@ -291,7 +276,7 @@ Quản lý bài hát
         },
         success: function (response) {
           Snackbar.show({
-            text: "Xóa song thành công",
+            text: "Xóa bài hát thành công",
             textColor: "#ddf5f0",
             backgroundColor: "#00ab55",
             actionText: "Bỏ qua",
@@ -304,7 +289,7 @@ Quản lý bài hát
         },
         error: function () {
           Snackbar.show({
-            text: "Xóa song thất bại",
+            text: "Xóa bài hát thất bại",
             textColor: "#fbeced",
             backgroundColor: "#e7515a",
             actionText: "Bỏ qua",

@@ -41,7 +41,14 @@ Chi tiết Album
   type="text/css"
   href="{% static 'css/plugins/dark/table/datatable/custom_dt_custom.css' %}"
 />
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/light/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/plugins/dark/tomSelect/custom-tomSelect.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/tomSelect/tom-select.default.min.css' %}">
+
 <style>
+  .ts-control{
+    padding: 12px;
+}
   .search-box {
     display: flex;
     gap: 1rem;
@@ -99,36 +106,26 @@ Chi tiết Album
         </div>
 
         <!-- SEARCH BOX-->
-        <div class="widget-content widget-content-area">
+        <div class="widget-content widget-content-area mb-2">
           <div class="row mb-4 align-items-end p-3">
-              <div class="col-md-5 position-relative mb-2">
-                <label for="song_search">Bài hát </label>
-                <input type="text"
-                      id="song_search"
-                      class="form-control"
-                      placeholder="Nhập tên bài hát...">
-                <div id="song_suggestions"
-                    class="list-group mt-1"
-                    style="position: absolute; z-index: 1000; width: 100%; max-height: 250px; overflow-y: auto; border: 0.1px solid #ccc; border-radius: 4px;">
-                </div>
-              </div>
-            
               <div class="col-md-5 mb-2">
-                <label for="selected_song">Bài hát đã chọn</label>
-                <input type="text"
-                      id="selected_song"
-                      class="form-control"
-                      readonly
-                      style="color: black;">
+                <label for="song_select">Bài hát</label>
+                <select id="song_select" class="form-control">
+                  <option value="">-- Chọn bài hát --</option>
+                  {% for song in all_songs %}
+                    <option value="{{ song.id }}" data-album-id="{{ song.album_id }}">
+                      {{ song.title }}
+                    </option>
+                  {% endfor %}
+                </select>
                 <input type="hidden" name="song" id="song_id">
               </div>
             
               <div class="col-md-2 mb-2">
-                <button type="submit" class="btn btn-primary add_song">Thêm bài hát</button>           
+                <button type="submit" class="btn btn-primary add_song">Thêm bài hát vào album</button>           
               </div>
             </div>
         </div>
-        
 
         <div class="widget-content widget-content-area">
           <table
@@ -219,7 +216,22 @@ Chi tiết Album
 <script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
 <script src="{% static 'plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js' %}"></script>
 <script src="{% static 'plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js' %}"></script>
+<script src="{% static 'plugins/tomSelect/tom-select.base.js' %}"></script>
+<script src="{% static 'plugins/tomSelect/custom-tom-select.js' %}"></script>
 <script>
+    new TomSelect("#song_select", {
+      placeholder: "Nhập tên bài hát...",
+      allowEmptyOption: true,
+      maxOptions: 20,
+      highlight: true,
+      onChange: function (value) {
+        const select = document.getElementById('song_select');
+        const selectedOption = select.options[select.selectedIndex];
+        document.getElementById('song_id').value = value;
+        document.getElementById('song_id').dataset.albumId = selectedOption.dataset.albumId || '';
+      }
+    });
+
   $("#album-table").DataTable({
     dom:
       "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
@@ -293,114 +305,67 @@ Chi tiết Album
 </script>
 
 
-{{ all_songs|json_script:"songs-data" }}
-<script>
-    const songs = JSON.parse(document.getElementById('songs-data').textContent);
-    const input_song = document.getElementById('song_search');
-    const suggestionBox_song = document.getElementById('song_suggestions');
-    const selectedSong = document.getElementById('selected_song');
-    const hiddenSongId = document.getElementById('song_id');
-
-    input_song.addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        suggestionBox_song.innerHTML = '';
-
-        if (query.length === 0) return;
-
-        const filtered = songs.filter(song => song.title.toLowerCase().includes(query));
-        filtered.forEach(song => {
-            const item = document.createElement('button');
-            item.type = 'button';
-            item.className = 'list-group-item list-group-item-action';
-            item.textContent = song.title;
-            item.onclick = function () {
-                selectedSong.value = song.title;
-                hiddenSongId.value = song.id;
-                hiddenSongId.dataset.albumId = song.album_id;
-                suggestionBox_song.innerHTML = '';
-                input_song.value = ''; 
-            };
-            suggestionBox_song.appendChild(item);
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (!suggestionBox_song.contains(e.target) && e.target !== input_song) {
-            suggestionBox_song.innerHTML = '';
-        }
-    });
-</script>
-
 <script>
   function getAlbumIdFromUrl() {
-  const urlParts = window.location.pathname.split('/');
-  // Ví dụ: ["", "album", "detail", "3", ""]
-  const albumId = urlParts[3]; // vị trí thứ 3 là album_id
-  return albumId;
-}
+    const urlParts = window.location.pathname.split('/');
+    return urlParts[3];
+  }
 
   $(document).ready(function () {
     $(".add_song").on("click", function (e) {
-      e.preventDefault();     
-      
-      const hiddenSongId = document.getElementById('song_id');
-      if(hiddenSongId.value==='' || hiddenSongId===null){
-        return;
-      }
-      const songIdToAdd = hiddenSongId.value;
+      e.preventDefault();
+
+      const songInput = document.getElementById('song_id');
+      const songIdToAdd = songInput.value;
       const albumIdToAdd = getAlbumIdFromUrl();
+
+      if (!songIdToAdd) return;
 
       $.ajax({
         url: `/album/detail/add/${songIdToAdd}/${albumIdToAdd}`,
-
         type: "POST",
         headers: {
           "X-CSRFToken": "{{ csrf_token }}",
         },
         success: function (response) {
+          let message = "";
+          let color = "";
+
           if (response.exist) {
-            Snackbar.show({
-              text: "Bài hát đã tồn tại trong album",
-              textColor: "#212529",
-              backgroundColor: "#ffc107",
-              actionText: "Bỏ qua",
-              actionTextColor: "#3b3f5c",
-            });
+            message = "Bài hát đã tồn tại trong album";
+            color = "#ffc107";
           } else if (response.orther_album) {
-            Snackbar.show({
-              text: "Bài hát này đang ở Album KHÁC",
-              textColor: "#212529",
-              backgroundColor: "#ffc107",
-              actionText: "Bỏ qua",
-              actionTextColor: "#3b3f5c",
-            });
+            message = "Bài hát này đang ở Album KHÁC";
+            color = "#ffc107";
           } else if (response.success) {
-            Snackbar.show({
-              text: "Thêm bài hát vào album thành công",
-              textColor: "#ddf5f0",
-              backgroundColor: "#00ab55",
-              actionText: "Bỏ qua",
-              actionTextColor: "#3b3f5c",
-            });
+            message = "Thêm bài hát vào album thành công";
+            color = "#00ab55";
           }
 
-          setTimeout(function () {
-            location.reload();
-          }, 1000);
+          Snackbar.show({
+            text: message,
+            textColor: "#fff",
+            backgroundColor: color,
+            actionText: "OK",
+            actionTextColor: "#3b3f5c"
+          });
+
+          setTimeout(() => location.reload(), 1000);
         },
         error: function () {
           Snackbar.show({
             text: "Thêm bài hát thất bại",
-            textColor: "#fbeced",
+            textColor: "#fff",
             backgroundColor: "#e7515a",
-            actionText: "Bỏ qua",
-            actionTextColor: "#3b3f5c",
+            actionText: "Thử lại",
+            actionTextColor: "#000"
           });
-        },
+        }
       });
     });
   });
 </script>
+
 
 
 {% endblock %}

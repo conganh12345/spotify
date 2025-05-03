@@ -2,12 +2,15 @@ from apps.cores.models import Song
 from apps.cores.repositories.base_repository import BaseRepository
 from apps.songs.repositories.song_repository_interface import SongRepositoryInterface
 from django.db.models import Q
+from django.db.models import Sum
 
 class SongRepository(BaseRepository, SongRepositoryInterface):
     def __init__(self):
         super().__init__(Song)
     def get_all_songs(self):
-        return Song.objects.select_related('artist','genre','album').all()
+        return Song.objects.select_related('artist', 'genre', 'album')\
+            .annotate(plays_total=Sum('songplay__plays_count'))\
+            .all()
     def get_song_id(self, id):
         return Song.objects.select_related('artist','genre','album').get(pk=id)
     def search_songs(self, keyword):

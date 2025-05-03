@@ -87,44 +87,49 @@ Quản lý Chat
                 <th style="width: 5%">ID</th>
                 <th style="width: 20%">Người dùng 1</th>
                 <th style="width: 25%">Người dùng 2</th>
-                <th style="width: 45%">Thời gian tạo</th>
-                <th class="no-content" style="width: 5%">Thao tác</th>
+                <th style="width: 35%">Thời gian tạo</th>
+                <th class="no-content" style="width: 15%">Thao tác</th>
               </tr>
             </thead>
             <tbody>
               {% for chat in chats %}
               <tr>
                 <td>{{ chat.id }}</td>
-                <td>{{ chat.user1.username  }}</td>
-                <td>{{ chat.user2.username  }}</td>
+                <td>
+                  <p class="text-start me-1">
+                      Tên:
+                      <span class="text-primary">{{ chat.user1.username }}</span>
+                  </p>
+                  <p class="text-start me-1">
+                      Email:
+                      <span class="text-primary">{{ chat.user1.email }}</span>
+                  </p>
+                </td>  
+                <td>
+                  <p class="text-start me-1">
+                      Tên:
+                      <span class="text-primary">{{ chat.user2.username }}</span>
+                  </p>
+                  <p class="text-start me-1">
+                      Email:
+                      <span class="text-primary">{{ chat.user2.email }}</span>
+                  </p>
+                </td> 
                 <td>{{ chat.created_at }}</td>
-                <td
-                  class="table-controls justify-content-center align-items-center pt-2"
-                >
-                <li>
-                   
-                    <a
-                      href="{% url 'detail_chat' chat.id %}"
-                      class="bs-tooltip view-detail"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                    >
-                    
 
-
-
-
-
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                    </a>
-                  </li>
-                </td>
+                <td>
+                  <a href="{% url 'detail_chat' chat.id %}" class="btn-light-dark p-2 rounded text-nowrap">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                          width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"
+                      >
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                      </svg>Xem chi tiết
+                  </a>
+              </td>
               </tr>
               {% endfor %}
             </tbody>
