@@ -48,6 +48,8 @@ def chat(request):
                         'user1_id': chat.user1.id if chat.user1 else None,
                         'user2_id': chat.user2.id if chat.user2 else None,
                         'created_at': chat.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                        'user1_name':chat.user1.username,
+                        'user2_name':chat.user2.username,
                         'chat_message': {
                             'id': last_message.id,
                             'message_text': last_message.message_text,
