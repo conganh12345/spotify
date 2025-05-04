@@ -60,7 +60,7 @@ def search_songs(request):
                     'name': song.genre.name if song.genre else None
                 },
                 'duration': song.duration,
-                'file_url': song.file_url,
+                'video_url': song.video_url,
                 'image_url': song.image_url,
                 'duration_video': format_duration(song.duration_video),
                 'created_at': song.created_at.strftime('%Y-%m-%d %H:%M:%S')
@@ -110,7 +110,7 @@ def get_songs_id(request, song_id):
                 'artist': song_detail.artist.name if song_detail.artist else None,
                 # 'duration': song_detail.duration,
                 'duration_video': format_duration(song_detail.duration_video),
-                'file_url': song_detail.file_url,
+                'video_url': song.video_url,
                 'image_url': song_detail.image_url,
                 'album': song_detail.album.title if song_detail.album else None,
                 'genre': song_detail.genre.name if song_detail.genre else None,
