@@ -19,10 +19,32 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from .serializers import UserUpdateSerializer
 from .serializers import UserSignupSerializer
-
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 
 User = get_user_model()
 user_repo = UserService()
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def staff_users_except_self(request):
+    try:
+        current_user_id = request.user.id
+        staff_users = User.objects.filter(is_staff=True).exclude(id=current_user_id)
+
+        result = [{
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+        } for user in staff_users]
+
+        return JsonResponse({'success': True, 'staff_users': result})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

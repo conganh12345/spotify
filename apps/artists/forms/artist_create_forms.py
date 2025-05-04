@@ -33,6 +33,5 @@ class ArtistCreationForm(forms.ModelForm):
 
     def clean_cover_url(self):
         cover_url = self.cleaned_data.get('cover_url')
-        if not cover_url:
-            raise ValidationError("Ảnh bìa không được để trống.")
+       
         return cover_url

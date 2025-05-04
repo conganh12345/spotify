@@ -7,6 +7,7 @@ from .api_views import SignupView
 
 urlpatterns = [
     path('api/token/', api_views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/users/staff/', api_views.staff_users_except_self, name='staff_users'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('users/<int:pk>/', UserUpdateView.as_view(), name='user-update'),
     path('signup/', SignupView.as_view(), name='signup')
