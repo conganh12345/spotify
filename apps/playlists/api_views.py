@@ -40,11 +40,15 @@ def get_playlists_user_id(request):
                     'message': 'No playlists found'
                 })
             
-            playlists_data = [{
-                'id': playlist.id, 
-                'name': playlist.name, 
-                'created_at': playlist.created_at
-            } for playlist in playlists]
+            playlists_data = []
+            for playlist in playlists:
+                song_ids = [ps.song.id for ps in playlist.playlistsong_set.all()]
+                playlists_data.append({
+                    'id': playlist.id,
+                    'name': playlist.name,
+                    'created_at': playlist.created_at,
+                    'songs': song_ids
+                })
         
             '''playlists_data = list(playlists)'''
             return JsonResponse({
