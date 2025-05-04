@@ -61,7 +61,9 @@ def artist_unfollow(request,artist_id):
         
 
 
-
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def artist_is_followed(request, artist_id):
     if request.method == HTTP_METHOD_GET:
         try:
