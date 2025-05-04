@@ -21,10 +21,11 @@ class UserSignupSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password']
 
     def create(self, validated_data):
-        # Tạo người dùng mới
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password']
         )
+        user.is_staff = True 
+        user.save()
         return user
