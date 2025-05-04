@@ -49,11 +49,11 @@ def create_message(request,chat_id):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)       
-@api_view(['POST'])
+@api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])     
 def get_all_messages_chat_id(request, chat_id):
-    if request.method == HTTP_METHOD_POST:
+    if request.method == HTTP_METHOD_GET:
         try:
             chat_messages = chat_message_repo.get_all_messages_chat_id(chat_id)
             result = []
