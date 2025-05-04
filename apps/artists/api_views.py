@@ -35,8 +35,9 @@ def get_artists_id(request, artist_id):
                     'title': song.title,
                     'artist': song.artist.name if song.artist else None,
                     'genre': song.genre.name if song.genre else None,
-                    'duration': format_duration(song.duration),
-                    'file_url': song.file_url,
+                    'duration_video': format_duration(song.duration_video),
+                    'video_url': song.video_url,
+                    'image_url': song.image_url,
                 })
 
             albums = artist_detail.albums.all()

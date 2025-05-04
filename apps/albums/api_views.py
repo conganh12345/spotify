@@ -36,6 +36,7 @@ def get_albums_id(request, album_id):
                     'genre': song.genre.name if song.genre else None,
                     'duration_video': format_duration(song.duration_video),
                     'video_url': song.video_url,
+                    'image_url': song.image_url,
                 })
 
             album_data = {
