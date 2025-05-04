@@ -110,7 +110,7 @@ def get_songs_id(request, song_id):
                 'artist': song_detail.artist.name if song_detail.artist else None,
                 # 'duration': song_detail.duration,
                 'duration_video': format_duration(song_detail.duration_video),
-                'video_url': song.video_url,
+                'video_url': song_detail.video_url,
                 'image_url': song_detail.image_url,
                 'album': song_detail.album.title if song_detail.album else None,
                 'genre': song_detail.genre.name if song_detail.genre else None,
