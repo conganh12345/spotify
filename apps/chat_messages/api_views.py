@@ -32,7 +32,7 @@ def create_message(request,chat_id):
         try:
             data = json.loads(request.body)
             message_text = data.get('message_text')
-            sender_id = request.user.id
+            sender_id = data.get('sender_id')
             new_message = chat_message_repo.create_message(chat_id=chat_id,message_text=message_text,sender_id=sender_id)
             new_message_dict = {
                 'message_text': new_message.message_text,
