@@ -168,4 +168,9 @@ class Migration(migrations.Migration):
                 'unique_together': {('user', 'artist')},
             },
         ),
+        migrations.AddField(
+            model_name='playlist',
+            name='songs',
+            field=models.ManyToManyField(related_name='playlists', through='cores.PlaylistSong', to='cores.song'),
+        ),
     ]

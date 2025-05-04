@@ -3,3 +3,7 @@ from abc import abstractmethod
 
 class PlaylistRepositoryInterface(BaseRepositoryInterface):
    pass
+
+@abstractmethod
+def get_all_playlists(self):
+   pass

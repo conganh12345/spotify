@@ -39,6 +39,11 @@ class Playlist(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    songs = models.ManyToManyField(
+        'Song',
+        through='PlaylistSong',
+        related_name='playlists'
+    )
     class Meta:
         db_table = 'playlists'
 
