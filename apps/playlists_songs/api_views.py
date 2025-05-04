@@ -34,7 +34,7 @@ def get_songs_in_playlist_id(request, playlist_id):
             songs_data = [{
                 'id': ps.song.id,
                 'title': ps.song.title,
-                'duration': ps.song.duration,
+                'duration': ps.song.duration_video,
                 'artist': ps.song.artist.name,  
                 'album': ps.song.album.title,
                 'genre':ps.song.genre.name    

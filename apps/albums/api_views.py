@@ -34,8 +34,8 @@ def get_albums_id(request, album_id):
                     'title': song.title,
                     'artist': song.artist.name if song.artist else None,
                     'genre': song.genre.name if song.genre else None,
-                    'duration_video': format_duration(song.duration),
-                    'file_url': song.file_url,
+                    'duration_video': format_duration(song.duration_video),
+                    'video_url': song.video_url,
                 })
 
             album_data = {
@@ -67,8 +67,8 @@ def get_all_albums(request):
                     'title': song.title,
                     'artist': song.artist.name if song.artist else None,
                     'genre': song.genre.name if song.genre else None,
-                    'duration': song.duration,
-                    'file_url': song.file_url,
+                    'duration': format_duration(song.duration_video),
+                    'video_url': song.video_url,
                 })
 
             album_data = {
