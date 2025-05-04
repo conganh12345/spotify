@@ -402,7 +402,7 @@ Quản lý Chat {% endblock %} {% block custom_css %}
       : "/static/images/female.png";
 
     const div = document.createElement("div");
-    div.className = "message " + (isUser1 ? "left" : "right");
+    div.className = "message " + (isUser1 ? "right" : "left");
 
     const timeHTML = `<span class="msg-time">${data.time}</span>`;
 
