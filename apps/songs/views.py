@@ -9,7 +9,7 @@ from apps.songs.forms.song_edit_form import SongEditForm
 from apps.albums.services.album_service import AlbumService
 from apps.genres.services.genre_service import GenreService
 from apps.common.constants import HTTP_METHOD_POST
-from apps.songs.utils import delete_song_image, handle_song_file_upload, delete_song_file, get_audio_duration, handle_song_image_upload, handle_video_file_upload, delete_video_file
+from apps.songs.utils import delete_song_image, get_video_duration, handle_song_file_upload, delete_song_file, get_audio_duration, handle_song_image_upload, handle_video_file_upload, delete_video_file
 from apps.artists.services.artist_service import ArtistService 
 from apps.songs.services.song_service import SongService 
 from datetime import date
@@ -39,6 +39,8 @@ def create_song(request):
         image_url = None
         file_url = None
         duration = 0
+        video_url = None
+        duration_video = 0
         if form.is_valid():
             try:
                 image_file = request.FILES.get('image')
@@ -53,12 +55,15 @@ def create_song(request):
                 video_file = request.FILES.get('video_file')
                 if video_file:
                     video_url = handle_video_file_upload(video_file)
+                    duration_video = get_video_duration(video_file)
+                    print(f"Thời lượng video: {duration_video} giây")
                     
                 song_data = form.cleaned_data
                 song_data['video_url'] = video_url
                 song_data['file_url'] = file_url
                 song_data['image_url'] = image_url
                 song_data['duration'] = duration
+                song_data['duration_video'] = duration_video
                 print("bai hat0",song_data)
                 song_repo.create_song(song_data)
                 messages.success(request, 'Thêm bài hát thành công!')
@@ -136,10 +141,13 @@ def edit_song(request, song_id):
             video_file = request.FILES.get('video_file')
             if video_file:
                 video_url = handle_video_file_upload(video_file)
+                duration_video = get_video_duration(video_file)
                 delete_video_file(song_repo.get_song_id(song_id).video_url)
                 song_data['video_url'] = video_url
+                song_data['duration_video'] = duration_video
             else:
                 song_data['video_url'] = song.video_url
+                song_data['duration_video'] = song.duration_video
 
             song_repo.update_song(song,song_data)
             messages.success(request, 'Update thành công!')

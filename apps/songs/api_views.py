@@ -19,6 +19,8 @@ from apps.artists.services.artist_service import ArtistService
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
+from apps.songs.utils import format_duration
+
 song_repo = SongService()
 album_repo = AlbumService()
 artist_repo = ArtistService()
@@ -60,6 +62,7 @@ def search_songs(request):
                 'duration': song.duration,
                 'file_url': song.file_url,
                 'image_url': song.image_url,
+                'duration_video': format_duration(song.duration_video),
                 'created_at': song.created_at.strftime('%Y-%m-%d %H:%M:%S')
             } for song in songs]
 
@@ -105,7 +108,8 @@ def get_songs_id(request, song_id):
                 'id': song_detail.id,
                 'title': song_detail.title,
                 'artist': song_detail.artist.name if song_detail.artist else None,
-                'duration': song_detail.duration,
+                # 'duration': song_detail.duration,
+                'duration_video': format_duration(song_detail.duration_video),
                 'file_url': song_detail.file_url,
                 'image_url': song_detail.image_url,
                 'album': song_detail.album.title if song_detail.album else None,
