@@ -58,3 +58,6 @@
 8. Cài thư viện này để lấy token đăng nhập JWT
   - pip install djangorestframework-simplejwt
 
+9. Lệnh để chạy get_duration
+  - pip install moviepy==1.0.3
+

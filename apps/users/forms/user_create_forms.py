@@ -32,6 +32,7 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.is_superuser = True
         user.set_password(self.cleaned_data['password'])  
         if commit:
             user.save()
