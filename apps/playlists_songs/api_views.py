@@ -59,7 +59,7 @@ def get_songs_in_playlist_id(request, playlist_id):
                 return JsonResponse({'success': True,'result':'delete' , 'message':'Xóa 1 bài hát khỏi playlist thành công'})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)    
-    if request.mothod == HTTP_METHOD_DELETE:
+    if request.method == HTTP_METHOD_DELETE:
         try:
             playlists_songs_repo.delete_all_songs_playlist_id(playlist_id=playlist_id)
             playlist_repo.delete(playlist_id)
