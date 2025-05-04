@@ -19,6 +19,7 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from .serializers import UserUpdateSerializer
 from .serializers import UserSignupSerializer
+from rest_framework.permissions import AllowAny
 
 
 User = get_user_model()
@@ -54,9 +55,11 @@ class UserUpdateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class SignupView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = UserSignupSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             return Response({'message': 'User created successfully', 'user_id': user.id}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
