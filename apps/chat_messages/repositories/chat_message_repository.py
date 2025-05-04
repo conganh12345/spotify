@@ -34,9 +34,9 @@ class ChatMessageRepository(BaseRepository, ChatMessageRepositoryInterface):
             )
             return new_message
       def get_all_messages_chat_id_first(self,chat_id):
-            return ChatMessage.objects.filter(chat_id=chat_id).order_by('-created_at')[:10]
+            return ChatMessage.objects.filter(chat_id=chat_id).order_by('-created_at')[:100]
       def get_all_messages_chat_id_after(self,chat_id,last_id):
-            return ChatMessage.objects.filter(chat_id=chat_id,id__lt=last_id).order_by('-created_at')[:10]
+            return ChatMessage.objects.filter(chat_id=chat_id,id__lt=last_id).order_by('-created_at')[:100]
       def delete_all_messages_by_chat_id(self, chat_id):
             ChatMessage.objects.filter(chat_id=chat_id).delete()
       
