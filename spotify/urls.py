@@ -26,6 +26,7 @@ urlpatterns = [
     path('group/', include('apps.groups.urls')),
     path('artist/', include('apps.artists.urls')), 
     path('genre/',include('apps.genres.urls')),
+    path('playlist/',include('apps.playlists.urls')),
     path('api/', include('apps.genres.api_urls')), 
     path('album/',include('apps.albums.urls')),
     path('song/',include('apps.songs.urls')),

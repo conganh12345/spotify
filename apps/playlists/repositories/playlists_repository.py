@@ -17,6 +17,14 @@ class PlaylistRepository(BaseRepository, PlaylistRepositoryInterface):
     def delete(self,playlist_id):
         Playlist.objects.get(id=playlist_id).delete()
     
+    def get_all_playlists(self):
+        return Playlist.objects.select_related('user').all()
+    
+    def get_playlist_with_songs_details(self, playlist_id):
+        playlist = Playlist.objects.prefetch_related(
+            'songs__artist', 'songs__album', 'songs__genre'
+        ).get(id=playlist_id)
+        return playlist
 
 
    
