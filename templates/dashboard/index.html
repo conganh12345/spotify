@@ -295,7 +295,7 @@
           colors: ['#1b55e2'],
           title: {
             text: "Biểu đồ lượt phát bài hát",
-            align: 'left',
+            align: 'center',
             style: { fontSize: '20px', fontFamily: 'Nunito, sans-serif', fontWeight: 600 }
           },
           grid: {
@@ -313,7 +313,7 @@
       });
   });
 
-    fetch('/api/albums/plays/')
+    fetch('/api/chart/albums/plays/')
       .then(response => response.json())
       .then(data => {
         const categories = Object.keys(data);
@@ -345,7 +345,7 @@
           colors: ['#e67e22'],
           title: {
             text: "Biểu đồ lượt phát album",
-            align: 'left',
+            align: 'center',
             style: { fontSize: '20px', fontFamily: 'Nunito, sans-serif', fontWeight: 600 }
           },
           grid: {

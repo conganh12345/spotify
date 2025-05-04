@@ -6,6 +6,8 @@ from django.db.models import Q
 class PlaylistRepository(BaseRepository, PlaylistRepositoryInterface):
     def __init__(self):
         super().__init__(Playlist)
+    def get_by_id(self, playlist_id):
+        return Playlist.objects.filter(id=playlist_id).first()
     def get_playlists_user_id(self,user_id):
         return Playlist.objects.filter(user_id=user_id)
     def add(self, name, user_id):

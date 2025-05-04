@@ -23,7 +23,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
+
 playlist_repo = PlaylistService()
+
 @api_view(['GET', 'POST']) 
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -33,13 +35,25 @@ def get_playlists_user_id(request):
             user_id = request.user.id
             playlists = playlist_repo.get_playlists_user_id(user_id)
             if not playlists:
-                return JsonResponse({'success': False, 'message': 'No playlists found'})
-            playlists_data = [{'id': playlist.id, 'name': playlist.name, 'created_at': playlist.created_at} for playlist in playlists]
+                return JsonResponse({
+                    'success': False, 
+                    'message': 'No playlists found'
+                })
+            
+            playlists_data = [{
+                'id': playlist.id, 
+                'name': playlist.name, 
+                'created_at': playlist.created_at
+            } for playlist in playlists]
         
             '''playlists_data = list(playlists)'''
-            return JsonResponse({'success': True,'playlists': playlists_data})
+            return JsonResponse({
+                'success': True,
+                'playlists': playlists_data
+            })
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+        
     if request.method == HTTP_METHOD_POST:
         try:
             user_id = request.user.id
@@ -47,7 +61,33 @@ def get_playlists_user_id(request):
             name = data.get('name')
             playlist_repo.add(name=name,user_id=user_id)
             return JsonResponse({'success': True})
+        
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)      
     return JsonResponse({'error': 'Invalid request method'}, status=405)   
         
+@api_view(['GET', 'DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def get_playlist_by_id_or_delete(request, playlist_id):
+    try:
+        if request.method == HTTP_METHOD_GET:
+            playlist = playlist_repo.get_by_id(playlist_id)
+            if not playlist:
+                return JsonResponse({'success': False, 'message': 'Playlist not found'}, status=404)
+
+            data = {
+                'id': playlist.id,
+                'name': playlist.name,
+                'created_at': playlist.created_at,
+            }
+            return JsonResponse({'success': True, 'playlist': data})
+        
+        elif request.method == HTTP_METHOD_DELETE:
+            deleted = playlist_repo.delete(playlist_id)
+            if not deleted:
+                return JsonResponse({'success': True, 'message': 'Playlist deleted successfully'})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
