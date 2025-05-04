@@ -4,7 +4,9 @@ from . import api_views
 
 urlpatterns = [
     path('chats/<int:chat_id>/messages/', api_views.create_message, name='create_message'),
-    path('chats/<int:chat_id>/', api_views.get_all_messages_chat_id, name='get_all_messages_chat_id'),
-    
-
+    path('chats/detail/<int:id>', api_views.detail_chat, name='detail_chat'),
 ]
+
+
+'''    path('chats/<int:chat_id>/', api_views.get_all_messages_chat_id, name='get_all_messages_chat_id'),
+'''

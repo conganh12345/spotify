@@ -49,6 +49,7 @@ def create_message(request,chat_id):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)       
+'''
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])     
@@ -72,8 +73,55 @@ def get_all_messages_chat_id(request, chat_id):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+'''
+chat_service = ChatService()
+chat_message_service = ChatMessageService()
+@api_view(['GET']) 
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def detail_chat(request, id):
+    if request.method == HTTP_METHOD_GET:
+        last_id = request.GET.get('last_id')
+        chat = chat_service.get_chat_by_id(id)
+        if last_id:
+            chat_messages = chat_message_service.get_all_messages_chat_id_after(id, last_id)
+            chat_messages_data = [
+                {
+                    'message_text': c.message_text,
+                    'is_read': c.is_read,
+                    'created_at': c.created_at,
+                    'sender_id': c.sender_id,
+                    'id': c.id,
+                    'time': localtime(c.created_at).strftime('%H:%M'),
+                    'date': localtime(c.created_at).strftime('%d-%m-%Y'),
+                }
+                for c in chat_messages
+            ]
+            return JsonResponse({'success': True,'messages':chat_messages_data})
+        else:
+            chat_messages = chat_message_service.get_all_messages_chat_id_first(id)
+            chat_json = {
+                'chat_id': id,
+                'user1_username': chat.user1.username,
+                'user2_username': chat.user2.username,
+                'user1_id': chat.user1.id,
+                'user2_id': chat.user2.id
+            }
+            chat_messages_data = [
+                {
+                    'message_text': c.message_text,
+                    'is_read': c.is_read,
+                    'created_at': c.created_at,
+                    'sender_id': c.sender_id,
+                    'id': c.id,
+                    'time': localtime(c.created_at).strftime('%H:%M'),
+                    'date': localtime(c.created_at).strftime('%d-%m-%Y'),
+                }
+                for c in chat_messages
+            ]
+            return JsonResponse({'success': True, 'chat': chat_json,
+                'chat_messages': chat_messages_data})
 
-    
    
     
 
