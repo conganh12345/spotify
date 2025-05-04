@@ -24,9 +24,7 @@ from rest_framework.response import Response
 from rest_framework import status
 playlists_songs_repo = PlaylistSongService()
 playlist_repo = PlaylistService()
-@api_view(['GET', 'PUT','DELETE']) 
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
+
 def get_songs_in_playlist_id(request, playlist_id):
     if request.method == HTTP_METHOD_GET:
         try:
