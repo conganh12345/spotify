@@ -8,11 +8,13 @@ from django.db.models import Q
 class ChatRepository(BaseRepository, ChatRepositoryInterface):
       def __init__(self):
          super().__init__(Chat)
-      def is_created_before(self,user1_id,user2_id):
-         try:
-            return Chat.objects.get(user1_id=user1_id,user2_id=user2_id)
-         except Chat.DoesNotExist:
-            return None
+      def is_created_before(self, user1_id, user2_id):
+         a_exists = Chat.objects.filter(user1_id=user1_id, user2_id=user2_id).exists()
+         b_exists = Chat.objects.filter(user1_id=user2_id, user2_id=user1_id).exists()
+         return a_exists or b_exists
+
+
+   
       def add(self,user1_id,user2_id):
           Chat.objects.create(user1_id=user1_id,user2_id=user2_id)
          

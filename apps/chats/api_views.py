@@ -30,7 +30,7 @@ def chat(request):
             user2_id = data.get('user2_id')
             user1_id = request.user.id
             chat_repo.add(user1_id=user1_id,user2_id=user2_id)
-            return JsonResponse({'success': True , 'message':'Follow thành công'})
+            return JsonResponse({'success': True , 'message':'Add thành công'})
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
@@ -66,6 +66,22 @@ def chat(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)            
 
+@api_view(['POST']) 
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def chat_create(request):
+     if request.method == HTTP_METHOD_POST:
+        try:
+            data = json.loads(request.body)
+            user2_id = data.get('user2_id')
+            user1_id = request.user.id
+            if chat_repo.is_created_before(user1_id,user2_id):
+                return JsonResponse({'success': True , 'is_created':True})
+            else:
+                return JsonResponse({'success': True , 'is_created':False})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+     
    
     
 
