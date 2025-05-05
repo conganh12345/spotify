@@ -39,27 +39,33 @@ def chat(request):
             user_id = request.user.id
             chats = chat_repo.get_all_chats_by_userid(user_id)
             last_messages = chat_message_repo.get_chats_with_last_message(chats)
+
             result = []
-            for last_message in last_messages:
-                if last_message is not None:
-                    chat = last_message.chat  
-                    result.append({
+
+            for chat, last_message in zip(chats, last_messages):
+                chat_data = {
+                    'chat_id': chat.id,
+                    'user1_id': chat.user1.id if chat.user1 else None,
+                    'user2_id': chat.user2.id if chat.user2 else None,
+                    'created_at': chat.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    'user1_name': chat.user1.username if chat.user1 else None,
+                    'user2_name': chat.user2.username if chat.user2 else None,
+                }
+
+                if last_message:
+                    chat_data['last_message'] = {
+                        'id': last_message.id,
+                        'message_text': last_message.message_text,
+                        'is_read': last_message.is_read,
+                        'created_at': last_message.created_at.strftime('%Y-%m-%d %H:%M:%S'),
                         'chat_id': chat.id,
-                        'user1_id': chat.user1.id if chat.user1 else None,
-                        'user2_id': chat.user2.id if chat.user2 else None,
-                        'created_at': chat.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                        'user1_name':chat.user1.username,
-                        'user2_name':chat.user2.username,
-                        'chat_message': {
-                            'id': last_message.id,
-                            'message_text': last_message.message_text,
-                            'is_read': last_message.is_read,
-                            'created_at': last_message.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                            'chat_id': chat.id,
-                            'sender_id': last_message.sender.id if last_message.sender else None
-                        }
-                    })
+                        'sender_id': last_message.sender.id if last_message.sender else None
+                    }
+
+                result.append(chat_data)
+
             return JsonResponse({'success': True, 'result': result})
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
