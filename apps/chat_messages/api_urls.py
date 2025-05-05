@@ -4,7 +4,7 @@ from . import api_views
 
 urlpatterns = [
     path('chats/<int:chat_id>/messages/', api_views.create_message, name='create_message'),
-    path('chats/detail/<int:id>', api_views.detail_chat, name='detail_chat'),
+    path('chats/detail/<int:id>', api_views.detail_chat, name='detail_chat1'),
 ]
 
 
