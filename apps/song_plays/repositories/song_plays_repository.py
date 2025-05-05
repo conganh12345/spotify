@@ -21,16 +21,13 @@ class SongPlayRepository(BaseRepository, SongPlayRepositoryInterface):
                song_play.plays_count +=1
                song_play.save()
            else:
-               SongPlay.objects.create(play_counts = 1 , song_id=song_id, user_id = user_id)
+               played_at = timezone.now()
+               SongPlay.objects.create(plays_count = 1 , song_id=song_id, user_id = user_id,played_at=played_at)
       def count_plays(self,song_id):
             result =  SongPlay.objects.filter(song_id=song_id).aggregate(total=Sum('plays_count'))
             return result['total'] or 0   
       
-      def is_played_before(self, user_id, song_id):
-        try:
-            return SongPlay.objects.get(user_id=user_id, song_id=song_id)
-        except SongPlay.DoesNotExist:
-            return None
+     
         
       def get_song_play_stats_last_15_days(self):
         end_date = timezone.now().date()

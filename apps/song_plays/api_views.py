@@ -22,16 +22,20 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 song_play_repo = SongPlayService()
+
 @api_view(['POST']) 
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def add(request):
+def add_song_playszzzzzz(request):
     if request.method == HTTP_METHOD_POST:
         try:
             data = json.loads(request.body)
             song_id = data.get('song_id')
             user_id = request.user.id
+            print(f"Song ID: {song_id}, User ID: {user_id}")  # Đảm bảo song_id và user_id được in ra đúng
+
             song_play_repo.add(user_id,song_id)
+            
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
