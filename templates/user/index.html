@@ -51,6 +51,7 @@ Quản lý người dùng
                                 <th>Tên</th>
                                 <th>Email</th>
                                 <th>Đăng nhập gần nhất</th>
+                                <th>Vai trò</th>
                                 <th style="width: 50%; text-align:center">Nhóm quyền</th>
                                 <th>Trạng thái</th>
                                 <th class="no-content" style="width: 5%">Thao tác</th>
@@ -63,6 +64,13 @@ Quản lý người dùng
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.last_login }}</td>
+                                <td>
+                                    {% if user.is_superuser %}
+                                        <span class="badge bg-danger">Quản trị viên</span>
+                                    {% else %}
+                                        <span class="badge bg-info">Người dùng</span>
+                                    {% endif %}
+                                </td>
                                 <td style="display: flex; white-space: normal;" class="block-td">
                                     <ul>
                                         {% for group in user.groups.all %}
@@ -74,6 +82,7 @@ Quản lý người dùng
                                         {% endfor %}
                                     </ul>
                                 </td>
+                                
                                 {% with user.is_active|user_status_badge as status %}
                                 <td>
                                     <span class="badge bg-{{ status.badge }}">

@@ -100,7 +100,7 @@
 
 					<div class="dropdown-item">
 						<form action="{% url 'admin:logout' %}" method="post" id="logout-form">
-							{% csrf_token %}
+						{% csrf_token %}
 						<a>	<button type="submit" style="all: unset; border: none; background: none; display: flex; align-items: center; cursor: pointer;">
 								<svg
 									xmlns="http://www.w3.org/2000/svg" width="24" height="24"

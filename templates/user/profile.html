@@ -57,65 +57,53 @@ Hồ sơ người dùng
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group mb-4">
-                                                                    <label for="Name">Tên người dùng </label>
-                                                                    <input name="username"
-                                                                           type="text"
-                                                                           id="UserName"
-                                                                           class="form-control {% if form.username.errors %}is-invalid{% endif %}"
-                                                                           placeholder="Tên người dùng"
-                                                                           value="{{ form.username.value|default:user.username }}">
-                                                                    {% for error in form.username.errors %}
-                                                                    <span class="invalid-feedback" role="alert">{{ error }}</span>
-                                                                    {% endfor %}
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-4">
-                                                                    <label for="Email">Email </label>
-                                                                    <input name="email"
-                                                                           type="text"
-                                                                           id="Email"
-                                                                           class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                                                                           placeholder="Email"
-                                                                           value="{{ form.email.value|default:user.email }}">
-                                                                    {% for error in form.email.errors %}
-                                                                    <span class="invalid-feedback" role="alert">{{ error }}</span>
-                                                                    {% endfor %}
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            {% comment %} <div class="col-md-6">
-                                                                <div class="form-group mb-4">
-                                                                    <label for="Password">Mật khẩu mới</label>
-                                                                    <input name="password"
-                                                                           type="password"
-                                                                           id="Password"
-                                                                           class="form-control {% if form.password.errors %}is-invalid{% endif %}"
-                                                                           placeholder="Để trống nếu không muốn thay đổi">
-                                                                    {% for error in form.password.errors %}
-                                                                    <span class="invalid-feedback" role="alert">{{ error }}</span>
-                                                                    {% endfor %}
-                                                                </div>
-                                                            </div> {% endcomment %}
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-4">
-                                                                    <label for="group">Nhóm quyền </label>
-                                                                    <select name="groups" id="group" class="form-control {% if form.groups.errors %}is-invalid{% endif %}" multiple>
-                                                                        {% for group in groups %}
-                                                                        <option value="{{ group.id }}" {% if group in user.groups.all %}selected{% endif %}>
-                                                                            {{ group.name }}
-                                                                        </option>
-                                                                        {% endfor %}
-                                                                    </select>
-                                                                    {% for error in form.groups.errors %}
-                                                                    <span class="text-danger">{{ error }}</span>
-                                                                    {% endfor %}
+                                                                    <label for="UserName">Tên người dùng</label>
+                                                                    <div class="form-control bg-light">
+                                                                        {{ user.username }}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         
-                                                            
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="Email">Email</label>
+                                                                    <div class="form-control bg-light">
+                                                                        {{ user.email }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="group">Nhóm quyền</label>
+                                                                    <div class="form-control bg-light" style="min-height: 38px;">
+                                                                        {% if user.groups.all %}
+                                                                            {% for group in user.groups.all %}
+                                                                                <span class="badge badge-secondary me-1">{{ group.name }}</span>
+                                                                            {% endfor %}
+                                                                        {% else %}
+                                                                            <span>Chưa có quyền nào</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-4">
+                                                                    <label for="role">Vai trò</label>
+                                                                    <div class="form-control bg-light">
+                                                                        {% if user.is_superuser %}
+                                                                            Quản trị viên
+                                                                        {% elif user.is_staff %}
+                                                                            Nhân viên
+                                                                        {% else %}
+                                                                            Người dùng
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                        
                                                         
                                                     </div>
                                                 </div>
