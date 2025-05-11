@@ -95,3 +95,22 @@ def get_playlist_by_id_or_delete(request, playlist_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def update_name_playlist(request,playlist_id):
+    if request.method == HTTP_METHOD_POST:
+        try:
+            user_id = request.user.id
+            data = json.loads(request.body)
+            name = data.get('name')
+            playlist = playlist_repo.update_name_playlist(playlist_id,name)
+            playlist_updated = {
+                'id':playlist.id,
+                'name':playlist.name
+            }
+            return JsonResponse({'success': True,'playlist_updated':playlist_updated})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)      
+    return JsonResponse({'error': 'Invalid request method'}, status=405)  
+

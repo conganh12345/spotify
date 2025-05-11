@@ -22,3 +22,5 @@ class PlaylistService:
     
     def get_playlist_details(self, playlist_id):
         return self.playlist_repo.get_playlist_with_songs_details(playlist_id)
+    def update_name_playlist(self,playlist_id,name):
+        return self.playlist_repo.update_name_playlist(playlist_id,name)
