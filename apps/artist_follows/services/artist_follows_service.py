@@ -12,5 +12,6 @@ class ArtistFollowService:
         return self.artist_follow_repo.delete_by_user_and_artist(user_id,artist_id)
     def get_all_artist_follows(self,user_id):
         return self.artist_follow_repo.get_all_artist_follows(user_id)
-
+    def count(self,artist_id):
+        return self.artist_follow_repo.count(artist_id)
     
