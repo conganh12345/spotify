@@ -23,4 +23,5 @@ class ArtistFollowRepository(BaseRepository, ArtistFollowRepositoryInterface):
     
     def get_all_artist_follows(self,user_id):
         return ArtistFollow.objects.filter(user_id=user_id).select_related('artist')
-   
+    def count(self,artist_id):
+        return ArtistFollow.objects.filter(artist_id=artist_id).count()

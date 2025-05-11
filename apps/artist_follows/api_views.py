@@ -79,6 +79,9 @@ def artist_is_followed(request, artist_id):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_all_artist_follows(request):
     if request.method == HTTP_METHOD_GET:
         try:
@@ -102,7 +105,17 @@ def get_all_artist_follows(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)        
     
+def count(request, artist_id):
+    if request.method == HTTP_METHOD_GET:
+        try:
+            count = artist_follow_repo.count(artist_id)
+            return JsonResponse({'success':True, 'count':count })  
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
 
+    return JsonResponse({'error': 'Invalid request method'}, status=405)  
+        
+        
             
             
             
