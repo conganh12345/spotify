@@ -22,8 +22,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
+from apps.songs.utils import format_duration
+
+
 playlists_songs_repo = PlaylistSongService()
 playlist_repo = PlaylistService()
+@csrf_exempt
 @api_view(['GET', 'PUT','DELETE']) 
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -34,10 +38,11 @@ def get_songs_in_playlist_id(request, playlist_id):
             songs_data = [{
                 'id': ps.song.id,
                 'title': ps.song.title,
-                'duration': ps.song.duration_video,
+                'duration_video': format_duration(ps.song.duration_video),
                 'artist': ps.song.artist.name,  
                 'album': ps.song.album.title,
-                'genre':ps.song.genre.name    
+                'image_url': ps.song.image_url,
+                'genre':ps.song.genre.name,
             } for ps in songs] 
             return JsonResponse({'success': True,'songs':songs_data})
         except Exception as e:
