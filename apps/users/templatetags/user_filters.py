@@ -16,3 +16,13 @@ def user_status_badge(value):
             "text": "Không xác định",
             "badge": "secondary"
         }
+        
+@register.simple_tag
+def has_permission(user, perm):
+    """
+    Kiểm tra xem user có quyền không.
+    :param user: đối tượng User
+    :param perm: tên quyền (vd: 'spotify.view_song')
+    :return: True nếu có quyền, False nếu không
+    """
+    return user.has_perm(perm)

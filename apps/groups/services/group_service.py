@@ -24,6 +24,11 @@ class GroupService:
             name=updated_group.name
         )
         group.permissions.set(selected_permissions)
+        
+        for user in group.user_set.all():
+            # Gán quyền mới cho user
+            user.user_permissions.set(group.permissions.all())
+            
         return group
 
     def delete_group(self, group_id):

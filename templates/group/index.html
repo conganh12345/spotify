@@ -1,5 +1,6 @@
 {% extends 'layouts/base-layout.html' %}
 {% load static %}
+{% load user_filters %}
 
 {% block title %}
 Quản lý nhóm quyền
@@ -40,9 +41,12 @@ Quản lý nhóm quyền
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
+                    {% has_permission user 'cores.add_group' as can_view_song %}
+			        {% if can_view_song %}
                     <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
                         <a href="{% url 'group_create' %}" class="btn btn-primary">Thêm mới</a>
                     </div>
+                    {% endif %}
                     <table id="group-table" class="table style-3 dt-table-hover" style="width: 100%">
                         <thead>
                             <tr>
@@ -76,6 +80,8 @@ Quản lý nhóm quyền
                                             </svg>
                                         </a>
                                     </li>
+                                    {% has_permission user 'cores.delete_group' as can_view_song %}
+			                        {% if can_view_song %}
                                     <li>
                                         <a href="#" class="bs-tooltip delete" data-group-id="{{ group.id }}" data-bs-toggle="tooltip" data-bs-placement="top">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1">
@@ -84,6 +90,7 @@ Quản lý nhóm quyền
                                             </svg>
                                         </a>
                                     </li>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}

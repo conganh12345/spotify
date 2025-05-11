@@ -1,5 +1,6 @@
 {% extends 'layouts/base-layout.html' %} 
 {% load static %} 
+{% load user_filters %} 
 
 {% block title %}
 Quản lý playlist 
@@ -98,6 +99,8 @@ Quản lý playlist
 
                 <td>{{ playlist.created_at }}</td>
 
+                {% has_permission user 'cores.change_playlist' as can_view_song %}
+                {% if can_view_song %}
                 <td>
                     <a href="{% url 'detail_playlist' playlist.id %}" class="btn-info p-2 rounded text-nowrap">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -111,8 +114,8 @@ Quản lý playlist
                         </svg>
                     </a>
                 </td>
-        
-                
+                {% endif %}
+
               </tr>
               {% endfor %}
             </tbody>
