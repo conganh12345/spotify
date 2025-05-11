@@ -13,7 +13,7 @@ class UserEditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email']
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -34,7 +34,7 @@ class UserEditForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         password = self.cleaned_data.get('password')
-        if password != '':
+        if password:
             user.set_password(password)
         if commit:
             user.save()
