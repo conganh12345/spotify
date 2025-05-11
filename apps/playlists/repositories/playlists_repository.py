@@ -34,6 +34,15 @@ class PlaylistRepository(BaseRepository, PlaylistRepositoryInterface):
             'songs__artist', 'songs__album', 'songs__genre'
         ).get(id=playlist_id)
         return playlist
+    def update_name_playlist(self, playlist_id, name):
+        try:
+            playlist = Playlist.objects.get(id=playlist_id)
+            playlist.name = name
+            playlist.save()
+            return playlist
+        except Playlist.DoesNotExist:
+            return None
 
+        
 
    
