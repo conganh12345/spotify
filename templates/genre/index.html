@@ -1,4 +1,7 @@
-{% extends 'layouts/base-layout.html' %} {% load static %} {% block title %}
+{% extends 'layouts/base-layout.html' %} {% load static %}
+{% load user_filters %}
+
+{% block title %}
 Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
 <link
   rel="stylesheet"
@@ -62,11 +65,14 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
           </div>
         </div>
         <div class="widget-content widget-content-area">
+          {% has_permission user 'cores.add_genre' as can_view_song %}
+          {% if can_view_song %}
           <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
             <a href="{% url 'genre_create' %}" class="btn btn-primary"
               >Thêm mới</a
             >
           </div>
+          {% endif %}
           <table
             id="genre-table"
             class="table style-3 dt-table-hover"
@@ -89,6 +95,8 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
                 <td
                   class="table-controls justify-content-center align-items-center pt-2"
                 >
+                  {% has_permission user 'cores.change_genre' as can_view_song %}
+                  {% if can_view_song %}
                   <li>
                     <a
                       href="{% url 'genre_edit' genre.id %}"
@@ -114,6 +122,9 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
                       </svg>
                     </a>
                   </li>
+                  {% endif %}
+                  {% has_permission user 'cores.delete_genre' as can_view_song %}
+                  {% if can_view_song %}
                   <li>
                     <a
                       href="#"
@@ -141,6 +152,7 @@ Quản lý nghệ sĩ {% endblock %} {% block custom_css %}
                       </svg>
                     </a>
                   </li>
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}

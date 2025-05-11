@@ -41,9 +41,12 @@ Quản lý người dùng
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
+                    {% has_permission user 'cores.add_user' as can_view_song %}
+			        {% if can_view_song %}
                     <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
                         <a href="{% url 'user_create' %}" class="btn btn-primary">Thêm mới</a>
                     </div>
+                    {% endif %}
                     <table id="user-table" class="table style-3 dt-table-hover" style="width: 100%">
                         <thead>
                             <tr>

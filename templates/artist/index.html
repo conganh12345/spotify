@@ -1,5 +1,6 @@
 {% extends 'layouts/base-layout.html' %} 
 {% load static %} 
+{% load user_filters %}
 
 {% block title %}
 Quản lý nghệ sĩ 
@@ -70,11 +71,14 @@ Quản lý nghệ sĩ
           </div>
         </div>
         <div class="widget-content widget-content-area">
+          {% has_permission user 'cores.add_artist' as can_view_song %}
+          {% if can_view_song %}
           <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
             <a href="{% url 'artist_create' %}" class="btn btn-primary"
               >Thêm mới</a
             >
           </div>
+          {% endif %}
           <table
             id="artist-table"
             class="table style-3 dt-table-hover"
@@ -105,6 +109,8 @@ Quản lý nghệ sĩ
                 <td
                   class="table-controls justify-content-center align-items-center pt-2"
                 >
+                  {% has_permission user 'cores.change_artist' as can_view_song %}
+                  {% if can_view_song %}
                   <li>
                     <a
                       href="{% url 'artist_edit' artist.id %}"
@@ -130,6 +136,9 @@ Quản lý nghệ sĩ
                       </svg>
                     </a>
                   </li>
+                  {% endif %}
+                  {% has_permission user 'cores.delete_artist' as can_view_song %}
+                  {% if can_view_song %}
                   <li>
                     <a
                       href="#"
@@ -157,6 +166,7 @@ Quản lý nghệ sĩ
                       </svg>
                     </a>
                   </li>
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}
